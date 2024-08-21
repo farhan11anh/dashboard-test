@@ -24,6 +24,8 @@ declare module 'vue-router/auto-routes' {
     'auth-login': RouteRecordInfo<'auth-login', '/auth/login', Record<never, never>, Record<never, never>>,
     'dashboard': RouteRecordInfo<'dashboard', '/dashboard', Record<never, never>, Record<never, never>>,
     'login': RouteRecordInfo<'login', '/login', Record<never, never>, Record<never, never>>,
+    'merchant': RouteRecordInfo<'merchant', '/merchant', Record<never, never>, Record<never, never>>,
+    'merchant-add-merchant': RouteRecordInfo<'merchant-add-merchant', '/merchant/add-merchant', Record<never, never>, Record<never, never>>,
     'second-page': RouteRecordInfo<'second-page', '/second-page', Record<never, never>, Record<never, never>>,
   }
 }

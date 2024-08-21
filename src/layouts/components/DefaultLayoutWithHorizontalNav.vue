@@ -33,9 +33,10 @@ import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
         :languages="themeConfig.app.i18n.langConfig"
       />
 
-      <NavbarThemeSwitcher />
+      <NavbarThemeSwitcher /> 
       <NavBarNotifications class="me-2" />
       <UserProfile />
+      
     </template>
 
     <!-- 👉 Pages -->
