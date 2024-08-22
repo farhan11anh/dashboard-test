@@ -3,7 +3,6 @@ import AppAutocomplete from '@/@core/components/app-form-elements/AppAutocomplet
 import AppDateTimePicker from '@/@core/components/app-form-elements/AppDateTimePicker.vue';
 import AppSelect from '@/@core/components/app-form-elements/AppSelect.vue';
 import LogisticsCardStatistics from '@/views/apps/logistics/LogisticsCardStatistics.vue'
-import { VCol } from 'vuetify/components';
 
 const headers = [
   {

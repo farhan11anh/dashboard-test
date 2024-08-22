@@ -11,7 +11,7 @@ export default [
   },
   {
     title: 'Approval',
-    to: { name: 'second-page' },
+    to: { name: 'approval-tab' },
     icon: { icon: 'tabler-checkbox' },
   },
   {

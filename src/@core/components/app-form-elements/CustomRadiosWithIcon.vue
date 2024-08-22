@@ -29,7 +29,9 @@ const updateSelectedOption = value => {
     class="custom-input-wrapper"
     @update:model-value="updateSelectedOption"
   >
-    <VRow>
+    <VRow
+      justify="space-between"
+    >
       <VCol
         v-for="item in props.radioContent"
         :key="item.title"
