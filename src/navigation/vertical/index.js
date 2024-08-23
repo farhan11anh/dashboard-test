@@ -11,7 +11,7 @@ export default [
   },
   {
     title: 'Approval',
-    to: { name: 'approval-tab' },
+    to: { name: 'approval-tab', params: { tab: 'banner' } },
     icon: { icon: 'tabler-checkbox' },
   },
   {

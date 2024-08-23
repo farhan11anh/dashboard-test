@@ -21,6 +21,7 @@ declare module 'vue-router/auto-routes' {
     'root': RouteRecordInfo<'root', '/', Record<never, never>, Record<never, never>>,
     '$error': RouteRecordInfo<'$error', '/:error(.*)', { error: ParamValue<true> }, { error: ParamValue<false> }>,
     'approval-tab': RouteRecordInfo<'approval-tab', '/approval/:tab', { tab: ParamValue<true> }, { tab: ParamValue<false> }>,
+    'approval-banner-id': RouteRecordInfo<'approval-banner-id', '/approval/banner/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'auth-create-password': RouteRecordInfo<'auth-create-password', '/auth/create-password', Record<never, never>, Record<never, never>>,
     'auth-login': RouteRecordInfo<'auth-login', '/auth/login', Record<never, never>, Record<never, never>>,
     'dashboard': RouteRecordInfo<'dashboard', '/dashboard', Record<never, never>, Record<never, never>>,
