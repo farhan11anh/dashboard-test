@@ -19,15 +19,15 @@ export default [
     icon: { icon: 'tabler-report' },
     children: [
       {
-        title: 'Analytics',
-        to: 'second-page',
+        title: 'Transaction',
+        to: 'report-transaction',
       },
       {
-        title: 'CRM',
+        title: 'Approval',
         to: 'second-page',
       },
     ],
-    badgeContent: '5',
+    badgeContent: '2',
     badgeClass: 'bg-error',
   },
   {

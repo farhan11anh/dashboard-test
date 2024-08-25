@@ -17,7 +17,7 @@ const logisticData = ref([
     isHover: false,
   },
   {
-    icon: '',
+    icon: 'tabler-square-x',
     color: 'error',
     title: 'Total Status Unpaid',
     value: 27,

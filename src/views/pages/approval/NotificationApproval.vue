@@ -1,6 +1,5 @@
 <script setup>
 import AppAutocomplete from '@/@core/components/app-form-elements/AppAutocomplete.vue';
-import AppDateTimePicker from '@/@core/components/app-form-elements/AppDateTimePicker.vue';
 import AppSelect from '@/@core/components/app-form-elements/AppSelect.vue';
 
 const headers = [
@@ -232,6 +231,8 @@ const deleteProduct = async id => {
   // Refetch products
   fetchProducts()
 }
+
+const router = useRouter()
 </script>
 
 <template>
@@ -334,9 +335,9 @@ const deleteProduct = async id => {
           <span class="text-body-1 text-high-emphasis">{{ item.category }}</span>
         </template>
 
-        <!-- stock -->
-        <template #item.stock="{ item }">
-          <VSwitch :model-value="item.stock" />
+        <!-- merchant name -->
+        <template #item.mName="{ item }">
+          <span @click="router.push('/approval/notification/'+item.mId)"  class="text-body-1 text-high-emphasis">{{ item.mName }}</span>
         </template>
 
         <!-- status -->

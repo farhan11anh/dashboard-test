@@ -4,14 +4,16 @@ import AppDateTimePicker from '@/@core/components/app-form-elements/AppDateTimeP
 import AppSelect from '@/@core/components/app-form-elements/AppSelect.vue';
 import LogisticsCardStatistics from '@/views/apps/logistics/LogisticsCardStatistics.vue'
 
+const router = useRouter()
+
 const headers = [
   {
-    title: 'Merchant Name',
-    key: 'mName',
+    title: 'Transaction Date',
+    key: 'tDate',
   },
   {
-    title: 'Brand Name',
-    key: 'brandName',
+    title: 'Payment Date',
+    key: 'pDate',
   },
   {
     title: 'Merchant ID',
@@ -19,20 +21,28 @@ const headers = [
     sortable: false,
   },
   {
-    title: 'SKU',
-    key: 'sku',
+    title: 'Brand Name',
+    key: 'bName',
   },
   {
-    title: 'Register Date',
-    key: 'registerDate',
+    title: 'Transaction ID',
+    key: 'tId',
+  },
+  {
+    title: 'Virtual Account Number',
+    key: 'VAN',
+  },
+  {
+    title: 'Customer Name',
+    key: 'cName',
+  },
+  {
+    title: 'Amount Total',
+    key: 'aTotal',
   },
   {
     title: 'Status',
     key: 'status',
-  },
-  {
-    title: 'Logo',
-    key: 'image',
   },
   {
     title: 'Actions',
@@ -77,7 +87,7 @@ const legalList = ref([
   },
 ])
 
-const brandList = ref([
+const transactionList = ref([
   {
     title: 'In Stock',
     value: true,
@@ -157,7 +167,7 @@ const resolveCategory = category => {
 }
 
 const resolveStatus = statusMsg => {
-  if (statusMsg === 'active')
+  if (statusMsg === 'paid')
     return {
       text: 'Active',
       color: 'warning',
@@ -167,7 +177,7 @@ const resolveStatus = statusMsg => {
       text: 'Publish',
       color: 'success',
     }
-  if (statusMsg === 'inactive')
+  if (statusMsg === 'unpaid')
     return {
       text: 'Inactive',
       color: 'error',
@@ -195,88 +205,127 @@ const {
 // const products = computed(() => productsData.value.products)
 const products = ref(
   [
-  {
-    "mName": "PT. Nusantara Sejahtera Raya",
-    "brandName": "tourizid",
-    "mId": "31-000-41511-00282",
-    "registerDate": "2024-07-25",
-    "status": "active",
-    "image": "/src/assets/images/ecommerce-images/product-9.png"
-  },
-  {
-    "mName": "PT. Global Internusa",
-    "brandName": "globex",
-    "mId": "31-000-41512-00283",
-    "registerDate": "2024-07-26",
-    "status": "active",
-    "image": "/src/assets/images/ecommerce-images/product-1.png"
-  },
-  {
-    "mName": "PT. Andalan Bersama",
-    "brandName": "andrano",
-    "mId": "31-000-41513-00284",
-    "registerDate": "2024-07-27",
-    "status": "inactive",
-    "image": "/src/assets/images/ecommerce-images/product-2.png"
-  },
-  {
-    "mName": "PT. Makmur Jaya Sentosa",
-    "brandName": "makmurid",
-    "mId": "31-000-41514-00285",
-    "registerDate": "2024-07-28",
-    "status": "active",
-    "image": "/src/assets/images/ecommerce-images/product-3.png"
-  },
-  {
-    "mName": "PT. Maju Mundur",
-    "brandName": "majundz",
-    "mId": "31-000-41515-00286",
-    "registerDate": "2024-07-29",
-    "status": "active",
-    "image": "/src/assets/images/ecommerce-images/product-4.png"
-  },
-  {
-    "mName": "PT. Sejahtera Abadi",
-    "brandName": "abadirid",
-    "mId": "31-000-41516-00287",
-    "registerDate": "2024-07-30",
-    "status": "inactive",
-    "image": "/src/assets/images/ecommerce-images/product-5.png"
-  },
-  {
-    "mName": "PT. Damai Sentosa",
-    "brandName": "damaisid",
-    "mId": "31-000-41517-00288",
-    "registerDate": "2024-07-31",
-    "status": "active",
-    "image": "/src/assets/images/ecommerce-images/product-6.png"
-  },
-  {
-    "mName": "PT. Aman Sejahtera",
-    "brandName": "amansid",
-    "mId": "31-000-41518-00289",
-    "registerDate": "2024-08-01",
-    "status": "active",
-    "image": "/src/assets/images/ecommerce-images/product-7.png"
-  },
-  {
-    "mName": "PT. Citra Nusantara",
-    "brandName": "citranus",
-    "mId": "31-000-41519-00290",
-    "registerDate": "2024-08-02",
-    "status": "inactive",
-    "image": "/src/assets/images/ecommerce-images/product-8.png"
-  },
-  {
-    "mName": "PT. Langgeng Sentosa",
-    "brandName": "langsent",
-    "mId": "31-000-41520-00291",
-    "registerDate": "2024-08-03",
-    "status": "active",
-    "image": "/src/assets/images/ecommerce-images/product-9.png"
-  }
+    {
+        "tDate": "2024-08-20",
+        "pDate": "2024-08-21",
+        "mId": "MID001",
+        "bName": "Business One",
+        "tId": "TID1001",
+        "VAN": "VAN1001",
+        "cName": "Client A",
+        "aTotal": 1500.00,
+        "status": "paid",
+        "action": "paid"
+    },
+    {
+        "tDate": "2024-08-21",
+        "pDate": "2024-08-22",
+        "mId": "MID002",
+        "bName": "Business Two",
+        "tId": "TID1002",
+        "VAN": "VAN1002",
+        "cName": "Client B",
+        "aTotal": 2500.00,
+        "status": "unpaid",
+        "action": "unpaid"
+    },
+    {
+        "tDate": "2024-08-22",
+        "pDate": "2024-08-23",
+        "mId": "MID003",
+        "bName": "Business Three",
+        "tId": "TID1003",
+        "VAN": "VAN1003",
+        "cName": "Client C",
+        "aTotal": 500.00,
+        "status": "paid",
+        "action": "paid"
+    },
+    {
+        "tDate": "2024-08-23",
+        "pDate": "2024-08-24",
+        "mId": "MID004",
+        "bName": "Business Four",
+        "tId": "TID1004",
+        "VAN": "VAN1004",
+        "cName": "Client D",
+        "aTotal": 3000.00,
+        "status": "unpaid",
+        "action": "unpaid"
+    },
+    {
+        "tDate": "2024-08-24",
+        "pDate": "2024-08-25",
+        "mId": "MID005",
+        "bName": "Business Five",
+        "tId": "TID1005",
+        "VAN": "VAN1005",
+        "cName": "Client E",
+        "aTotal": 1000.00,
+        "status": "paid",
+        "action": "paid"
+    },
+    {
+        "tDate": "2024-08-25",
+        "pDate": "2024-08-26",
+        "mId": "MID006",
+        "bName": "Business Six",
+        "tId": "TID1006",
+        "VAN": "VAN1006",
+        "cName": "Client F",
+        "aTotal": 4500.00,
+        "status": "unpaid",
+        "action": "unpaid"
+    },
+    {
+        "tDate": "2024-08-26",
+        "pDate": "2024-08-27",
+        "mId": "MID007",
+        "bName": "Business Seven",
+        "tId": "TID1007",
+        "VAN": "VAN1007",
+        "cName": "Client G",
+        "aTotal": 2000.00,
+        "status": "paid",
+        "action": "paid"
+    },
+    {
+        "tDate": "2024-08-27",
+        "pDate": "2024-08-28",
+        "mId": "MID008",
+        "bName": "Business Eight",
+        "tId": "TID1008",
+        "VAN": "VAN1008",
+        "cName": "Client H",
+        "aTotal": 3500.00,
+        "status": "unpaid",
+        "action": "unpaid"
+    },
+    {
+        "tDate": "2024-08-28",
+        "pDate": "2024-08-29",
+        "mId": "MID009",
+        "bName": "Business Nine",
+        "tId": "TID1009",
+        "VAN": "VAN1009",
+        "cName": "Client I",
+        "aTotal": 1800.00,
+        "status": "paid",
+        "action": "paid"
+    },
+    {
+        "tDate": "2024-08-29",
+        "pDate": "2024-08-30",
+        "mId": "MID010",
+        "bName": "Business Ten",
+        "tId": "TID1010",
+        "VAN": "VAN1010",
+        "cName": "Client J",
+        "aTotal": 2200.00,
+        "status": "unpaid",
+        "action": "unpaid"
+    }
 ]
-
 )
 
 const totalProduct = computed(() => productsData.value.total)
@@ -295,30 +344,11 @@ const deleteProduct = async id => {
 </script>
 
 <template>
-  <AppTitle title="Data Merchant" />
+    <AppTitle title="Transaction Report" />
   <VRow class="match-height">
     <VCol cols="12">
       <LogisticsCardStatistics />
     </VCol>
-
-    <VCol 
-    >
-      <div class="w-full" >
-        <VRow justify="end" >
-          <VCol cols="2"  >
-            <VBtn
-                width="100%"
-                color="primary"
-                prepend-icon="tabler-plus"
-                @click="$router.push('/merchant/add-merchant')"
-              >
-                Add Merchant
-            </VBtn>
-          </VCol>
-        </VRow>
-      </div>
-    </VCol>
-
 
     <VCol
       cols="12"
@@ -337,7 +367,7 @@ const deleteProduct = async id => {
           >
             <AppDateTimePicker
               v-model="date"
-              placeholder="Select Date"
+              placeholder="Select Transaction Date"
               append-icon="tabler-calendar"
               
             />
@@ -349,9 +379,11 @@ const deleteProduct = async id => {
             sm="4"
           >
             <AppAutocomplete
-              v-model="legalName"
-              placeholder="Legal Name"
-              :items="legalList"
+              v-model="merchantId"
+              placeholder="Merchant ID"
+              :items="products.map(product =>{ 
+                return {'title': product.mId, 'value': product.mId} 
+                }) "
               clearable
               clear-icon="tabler-x"
             />
@@ -363,9 +395,11 @@ const deleteProduct = async id => {
             sm="4"
           >
             <AppAutocomplete
-              v-model="brandName"
-              placeholder="Brand Name"
-              :items="brandList"
+              v-model="transactionId"
+              placeholder="Transaction ID"
+              :items="products.map(product =>{ 
+                return {'title': product.tId, 'value': product.tId} 
+                }) "
               clearable
               clear-icon="tabler-x"
             />
@@ -447,15 +481,13 @@ const deleteProduct = async id => {
         @update:options="updateOptions"
       >
         <!-- product  -->
-        <template #item.image="{ item }">
+        <template #item.mId="{ item }">
           <div class="d-flex align-center gap-x-4">
-            <VAvatar
-              v-if="item.image"
-              size="38"
-              variant="tonal"
-              rounded
-              :image="item.image"
-            />
+            <div @click="router.push('/report/transaction/'+ item.mId)" > {{ item.mId }} </div>
+            <!-- <div class="d-flex flex-column">
+              <span class="text-body-1 font-weight-medium text-high-emphasis">{{ item.productName }}</span>
+              <span class="text-body-2">{{ item.productBrand }}</span>
+            </div> -->
           </div>
         </template>
 

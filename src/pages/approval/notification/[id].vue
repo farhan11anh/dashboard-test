@@ -1,14 +1,9 @@
 <script setup>
 import HistoryAproval from '@/views/pages/approval/detail/HistoryAproval.vue';
 
-import { useRouter } from 'vue-router';
-
-const router = useRouter();
-
-
 definePage({
     meta: {
-        navActiveLink: 'approval-banner-id',
+        navActiveLink: 'approval-notification-id',
         key: 'id',
         }
 })

@@ -22,12 +22,15 @@ declare module 'vue-router/auto-routes' {
     '$error': RouteRecordInfo<'$error', '/:error(.*)', { error: ParamValue<true> }, { error: ParamValue<false> }>,
     'approval-tab': RouteRecordInfo<'approval-tab', '/approval/:tab', { tab: ParamValue<true> }, { tab: ParamValue<false> }>,
     'approval-banner-id': RouteRecordInfo<'approval-banner-id', '/approval/banner/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    'approval-notification-id': RouteRecordInfo<'approval-notification-id', '/approval/notification/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'auth-create-password': RouteRecordInfo<'auth-create-password', '/auth/create-password', Record<never, never>, Record<never, never>>,
     'auth-login': RouteRecordInfo<'auth-login', '/auth/login', Record<never, never>, Record<never, never>>,
     'dashboard': RouteRecordInfo<'dashboard', '/dashboard', Record<never, never>, Record<never, never>>,
     'login': RouteRecordInfo<'login', '/login', Record<never, never>, Record<never, never>>,
     'merchant': RouteRecordInfo<'merchant', '/merchant', Record<never, never>, Record<never, never>>,
     'merchant-add-merchant': RouteRecordInfo<'merchant-add-merchant', '/merchant/add-merchant', Record<never, never>, Record<never, never>>,
+    'report-transaction': RouteRecordInfo<'report-transaction', '/report/transaction', Record<never, never>, Record<never, never>>,
+    'report-transaction-id': RouteRecordInfo<'report-transaction-id', '/report/transaction/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'second-page': RouteRecordInfo<'second-page', '/second-page', Record<never, never>, Record<never, never>>,
   }
 }
