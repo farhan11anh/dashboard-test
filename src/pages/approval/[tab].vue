@@ -11,7 +11,6 @@ definePage({
 })
 
 const route = useRoute('approval-tab')
-
 const activeTab = computed({
   get: () => route.params.tab,
   set: () => route.params.tab,

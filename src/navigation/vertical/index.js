@@ -5,6 +5,16 @@ export default [
     icon: { icon: 'tabler-smart-home' },
   },
   {
+    title: 'Business Account',
+    to: { name: 'business-account' },
+    icon: { icon: 'tabler-star' },
+  },
+  {
+    title: 'My Store',
+    to: { name: 'my-store-tab', params: { tab: 'store-preview' } },
+    icon: { icon: 'tabler-star' },
+  },
+  {
     title: 'Merchant',
     to: { name: 'merchant' },
     icon: { icon: 'tabler-building-store' },
