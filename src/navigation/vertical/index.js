@@ -57,6 +57,22 @@ export default [
     badgeClass: 'bg-error',
   },
   {
+    title: 'Users',
+    icon: { icon: 'tabler-user-circle' },
+    children: [
+      {
+        title: 'Role',
+        to: 'users-role',
+      },
+      {
+        title: 'List',
+        to: 'users-list',
+      },
+    ],
+    badgeContent: '2',
+    badgeClass: 'bg-error',
+  },
+  {
     title: 'Setting',
     icon: { icon: 'tabler-settings' },
     children: [

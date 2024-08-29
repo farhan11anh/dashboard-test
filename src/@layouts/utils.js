@@ -54,7 +54,7 @@ export const isNavLinkActive = (link, router) => {
     return false
   
   return matchedRoutes.some(route => {
-    return route.name === resolveRoutedName || route.meta.navActiveLink === resolveRoutedName
+    return route.name?.includes(resolveRoutedName) || route.meta.navActiveLink === resolveRoutedName
   })
 }
 
