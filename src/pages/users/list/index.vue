@@ -1,14 +1,6 @@
 <script setup>
 import AddNewUserDrawer from '@/views/apps/user/list/AddNewUserDrawer.vue'
 
-const props = defineProps({
-  users: {
-    type: Array,
-    required: true,
-    default: () => [],
-  }
-})
-
 // 👉 Store
 const searchQuery = ref('')
 const selectedRole = ref()
@@ -29,20 +21,16 @@ const updateOptions = options => {
 // Headers
 const headers = [
   {
-    title: 'No',
-    key: 'no',
+    title: 'Name',
+    key: 'user',
+  },
+  {
+    title: 'Email',
+    key: 'email',
   },
   {
     title: 'Role',
     key: 'role',
-  },
-  {
-    title: 'Merchant ID',
-    key: 'merchantId',
-  },
-  {
-    title: 'Merchant Name',
-    key: 'merchantName',
   },
   {
     title: 'Status',
@@ -70,7 +58,8 @@ const {
   },
 }))
 
-const totalUsers = computed(() => 4)
+const users = computed(() => usersData.value.users)
+const totalUsers = computed(() => usersData.value.totalUsers)
 
 // 👉 search filters
 const roles = [
@@ -96,39 +85,40 @@ const roles = [
   },
 ]
 
-const resolveUserRoleVariant = role => {
-  const roleLowerCase = role.toLowerCase()
-  if (roleLowerCase === 'subscriber')
-    return {
-      color: 'primary',
-      icon: 'tabler-user',
-    }
-  if (roleLowerCase === 'author')
-    return {
-      color: 'warning',
-      icon: 'tabler-settings',
-    }
-  if (roleLowerCase === 'maintainer')
-    return {
-      color: 'success',
-      icon: 'tabler-chart-donut',
-    }
-  if (roleLowerCase === 'editor')
-    return {
-      color: 'info',
-      icon: 'tabler-pencil',
-    }
-  if (roleLowerCase === 'admin')
-    return {
-      color: 'error',
-      icon: 'tabler-device-laptop',
-    }
-  
-  return {
-    color: 'primary',
-    icon: 'tabler-user',
-  }
-}
+const plans = [
+  {
+    title: 'Basic',
+    value: 'basic',
+  },
+  {
+    title: 'Company',
+    value: 'company',
+  },
+  {
+    title: 'Enterprise',
+    value: 'enterprise',
+  },
+  {
+    title: 'Team',
+    value: 'team',
+  },
+]
+
+const status = [
+  {
+    title: 'Pending',
+    value: 'pending',
+  },
+  {
+    title: 'Active',
+    value: 'active',
+  },
+  {
+    title: 'Inactive',
+    value: 'inactive',
+  },
+]
+
 
 const resolveUserStatusVariant = stat => {
   const statLowerCase = stat.toLowerCase()
@@ -150,7 +140,7 @@ const addNewUser = async userData => {
     body: userData,
   })
 
-  // refetch User
+  // Refetch User
   fetchUsers()
 }
 
@@ -162,31 +152,94 @@ const deleteUser = async id => {
   if (index !== -1)
     selectedRows.value.splice(index, 1)
 
-  // refetch User
+  // Refetch User
   fetchUsers()
 }
 </script>
 
 <template>
   <section>
-    <VCard>
-      <VCardText class="d-flex flex-wrap gap-4">
-        <div class="d-flex gap-2 align-center">
-          <AppTitle title="List Role" />
-        </div>
+    <VCard class="mb-6">
+      <VCardItem class="pb-4">
+        <VCardTitle>Filters</VCardTitle>
+      </VCardItem>
 
+      <VCardText>
+        <VRow>
+          <!-- 👉 Select Role -->
+          <VCol
+            cols="12"
+            sm="6"
+          >
+            <AppSelect
+              v-model="selectedRole"
+              placeholder="Select Role"
+              :items="roles"
+              clearable
+              clear-icon="tabler-x"
+            />
+          </VCol>
+
+          <!-- 👉 Select Status -->
+          <VCol
+            cols="12"
+            sm="6"
+          >
+            <AppSelect
+              v-model="selectedStatus"
+              placeholder="Select Status"
+              :items="status"
+              clearable
+              clear-icon="tabler-x"
+            />
+          </VCol>
+        </VRow>
+      </VCardText>
+
+      <VDivider />
+
+      <VCardText class="d-flex flex-wrap gap-4">
+        <div class="me-3 d-flex gap-3">
+          <AppSelect
+            :model-value="itemsPerPage"
+            :items="[
+              { value: 10, title: '10' },
+              { value: 25, title: '25' },
+              { value: 50, title: '50' },
+              { value: 100, title: '100' },
+              { value: -1, title: 'All' },
+            ]"
+            style="inline-size: 6.25rem;"
+            @update:model-value="itemsPerPage = parseInt($event, 10)"
+          />
+        </div>
         <VSpacer />
 
-        <div class="d-flex align-center flex-wrap gap-4">
+        <div class="app-user-search-filter d-flex align-center flex-wrap gap-4">
+          <!-- 👉 Search  -->
+          <div style="inline-size: 15.625rem;">
+            <AppTextField
+              v-model="searchQuery"
+              placeholder="Search User"
+            />
+          </div>
+
+          <!-- 👉 Export button -->
+          <VBtn
+            variant="tonal"
+            color="secondary"
+            prepend-icon="tabler-upload"
+          >
+            Export
+          </VBtn>
+
           <!-- 👉 Add user button -->
-          <AppSelect
-            v-model="selectedRole"
-            placeholder="Select Role"
-            :items="roles"
-            clearable
-            clear-icon="tabler-x"
-            style="inline-size: 10rem;"
-          />
+          <VBtn
+            prepend-icon="tabler-plus"
+            @click="isAddNewUserDrawerVisible = true"
+          >
+            Add New User
+          </VBtn>
         </div>
       </VCardText>
 
@@ -197,13 +250,8 @@ const deleteUser = async id => {
         v-model:items-per-page="itemsPerPage"
         v-model:model-value="selectedRows"
         v-model:page="page"
-        :items-per-page-options="[
-          { value: 10, title: '10' },
-          { value: 20, title: '20' },
-          { value: 50, title: '50' },
-          { value: -1, title: '$vuetify.dataFooter.itemsPerPageAll' },
-        ]"
         :items="users"
+        item-value="id"
         :items-length="totalUsers"
         :headers="headers"
         class="text-no-wrap"
@@ -211,19 +259,24 @@ const deleteUser = async id => {
         @update:options="updateOptions"
       >
         <!-- User -->
-        <template #item.no="{ item }">
-          {{ users.indexOf(item) + 1 }}
+        <template #item.user="{ item }">
+          <div class="d-flex align-center gap-x-4">
+            <div class="d-flex flex-column">
+              <h6 class="text-base">
+                <RouterLink
+                  to=""
+                  class="font-weight-medium text-link"
+                >
+                  {{ item.fullName }}
+                </RouterLink>
+              </h6>
+            </div>
+          </div>
         </template>
 
         <!-- 👉 Role -->
         <template #item.role="{ item }">
           <div class="d-flex align-center gap-x-2">
-            <VIcon
-              :size="22"
-              :icon="resolveUserRoleVariant(item.role).icon"
-              :color="resolveUserRoleVariant(item.role).color"
-            />
-
             <div class="text-capitalize text-high-emphasis text-body-1">
               {{ item.role }}
             </div>
@@ -293,6 +346,7 @@ const deleteUser = async id => {
           </VBtn>
         </template>
 
+        <!-- pagination -->
         <template #bottom>
           <TablePagination
             v-model:page="page"
@@ -303,7 +357,6 @@ const deleteUser = async id => {
       </VDataTableServer>
       <!-- SECTION -->
     </VCard>
-
     <!-- 👉 Add New User -->
     <AddNewUserDrawer
       v-model:isDrawerOpen="isAddNewUserDrawerVisible"
@@ -311,13 +364,3 @@ const deleteUser = async id => {
     />
   </section>
 </template>
-
-<style lang="scss">
-.text-capitalize {
-  text-transform: capitalize;
-}
-
-.user-list-name:not(:hover) {
-  color: rgba(var(--v-theme-on-background), var(--v-medium-emphasis-opacity));
-}
-</style>

@@ -3,6 +3,7 @@ import AppAutocomplete from '@/@core/components/app-form-elements/AppAutocomplet
 import AppDateTimePicker from '@/@core/components/app-form-elements/AppDateTimePicker.vue';
 import AppSelect from '@/@core/components/app-form-elements/AppSelect.vue';
 import LogisticsCardStatistics from '@/views/apps/logistics/LogisticsCardStatistics.vue'
+import CardStatitiscticsApproval from '@/views/pages/report/transaction/CardStatitiscticsApproval.vue';
 
 const router = useRouter()
 
@@ -347,7 +348,7 @@ const deleteProduct = async id => {
     <AppTitle title="Transaction Report" />
   <VRow class="match-height">
     <VCol cols="12">
-      <LogisticsCardStatistics />
+      <CardStatitiscticsApproval />
     </VCol>
 
     <VCol
@@ -482,12 +483,8 @@ const deleteProduct = async id => {
       >
         <!-- product  -->
         <template #item.mId="{ item }">
-          <div class="d-flex align-center gap-x-4">
-            <div @click="router.push('/report/transaction/'+ item.mId)" > {{ item.mId }} </div>
-            <!-- <div class="d-flex flex-column">
-              <span class="text-body-1 font-weight-medium text-high-emphasis">{{ item.productName }}</span>
-              <span class="text-body-2">{{ item.productBrand }}</span>
-            </div> -->
+          <div>
+            {{ item.mId }}
           </div>
         </template>
 
@@ -508,8 +505,10 @@ const deleteProduct = async id => {
         </template>
 
         <!-- stock -->
-        <template #item.stock="{ item }">
-          <VSwitch :model-value="item.stock" />
+        <template #item.tDate="{ item }">
+          <div class="d-flex align-center gap-x-4">
+            <div class="cursor-pointer" @click="router.push('/report/transaction/'+ item.mId)" > {{ item.tDate }} </div>
+          </div>
         </template>
 
         <!-- status -->

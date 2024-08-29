@@ -2,7 +2,7 @@
 import AppAutocomplete from '@/@core/components/app-form-elements/AppAutocomplete.vue';
 import AppDateTimePicker from '@/@core/components/app-form-elements/AppDateTimePicker.vue';
 import AppSelect from '@/@core/components/app-form-elements/AppSelect.vue';
-import LogisticsCardStatistics from '@/views/apps/logistics/LogisticsCardStatistics.vue'
+import CradStatisticMerchant from '@/views/pages/merchant/CradStatisticMerchant.vue';
 
 const headers = [
   {
@@ -157,9 +157,9 @@ const resolveCategory = category => {
 }
 
 const resolveStatus = statusMsg => {
-  if (statusMsg === 'active')
+  if (statusMsg === 'approve')
     return {
-      text: 'Active',
+      text: 'Approve',
       color: 'warning',
     }
   if (statusMsg === 'Published')
@@ -167,9 +167,9 @@ const resolveStatus = statusMsg => {
       text: 'Publish',
       color: 'success',
     }
-  if (statusMsg === 'inactive')
+  if (statusMsg === 'needApprove')
     return {
-      text: 'Inactive',
+      text: 'Need Approve',
       color: 'error',
     }
 }
@@ -200,7 +200,7 @@ const products = ref(
     "brandName": "tourizid",
     "mId": "31-000-41511-00282",
     "registerDate": "2024-07-25",
-    "status": "active",
+    "status": "approve",
     "image": "/src/assets/images/ecommerce-images/product-9.png"
   },
   {
@@ -208,7 +208,7 @@ const products = ref(
     "brandName": "globex",
     "mId": "31-000-41512-00283",
     "registerDate": "2024-07-26",
-    "status": "active",
+    "status": "approve",
     "image": "/src/assets/images/ecommerce-images/product-1.png"
   },
   {
@@ -216,7 +216,7 @@ const products = ref(
     "brandName": "andrano",
     "mId": "31-000-41513-00284",
     "registerDate": "2024-07-27",
-    "status": "inactive",
+    "status": "needApprove",
     "image": "/src/assets/images/ecommerce-images/product-2.png"
   },
   {
@@ -224,7 +224,7 @@ const products = ref(
     "brandName": "makmurid",
     "mId": "31-000-41514-00285",
     "registerDate": "2024-07-28",
-    "status": "active",
+    "status": "approve",
     "image": "/src/assets/images/ecommerce-images/product-3.png"
   },
   {
@@ -232,7 +232,7 @@ const products = ref(
     "brandName": "majundz",
     "mId": "31-000-41515-00286",
     "registerDate": "2024-07-29",
-    "status": "active",
+    "status": "approve",
     "image": "/src/assets/images/ecommerce-images/product-4.png"
   },
   {
@@ -240,7 +240,7 @@ const products = ref(
     "brandName": "abadirid",
     "mId": "31-000-41516-00287",
     "registerDate": "2024-07-30",
-    "status": "inactive",
+    "status": "needApprove",
     "image": "/src/assets/images/ecommerce-images/product-5.png"
   },
   {
@@ -248,7 +248,7 @@ const products = ref(
     "brandName": "damaisid",
     "mId": "31-000-41517-00288",
     "registerDate": "2024-07-31",
-    "status": "active",
+    "status": "approve",
     "image": "/src/assets/images/ecommerce-images/product-6.png"
   },
   {
@@ -256,7 +256,7 @@ const products = ref(
     "brandName": "amansid",
     "mId": "31-000-41518-00289",
     "registerDate": "2024-08-01",
-    "status": "active",
+    "status": "approve",
     "image": "/src/assets/images/ecommerce-images/product-7.png"
   },
   {
@@ -264,7 +264,7 @@ const products = ref(
     "brandName": "citranus",
     "mId": "31-000-41519-00290",
     "registerDate": "2024-08-02",
-    "status": "inactive",
+    "status": "needApprove",
     "image": "/src/assets/images/ecommerce-images/product-8.png"
   },
   {
@@ -272,7 +272,7 @@ const products = ref(
     "brandName": "langsent",
     "mId": "31-000-41520-00291",
     "registerDate": "2024-08-03",
-    "status": "active",
+    "status": "approve",
     "image": "/src/assets/images/ecommerce-images/product-9.png"
   }
 ]
@@ -298,7 +298,7 @@ const deleteProduct = async id => {
   <AppTitle title="Data Merchant" />
   <VRow class="match-height">
     <VCol cols="12">
-      <LogisticsCardStatistics />
+      <CradStatisticMerchant />
     </VCol>
 
     <VCol 

@@ -23,13 +23,13 @@ const emit = defineEmits([
 
 const permissions = ref([
   {
-    name: 'User Management',
+    name: 'Business Account',
     read: false,
     write: false,
     create: false,
   },
   {
-    name: 'Content Management',
+    name: 'My Store',
     read: false,
     write: false,
     create: false,
@@ -41,42 +41,38 @@ const permissions = ref([
     create: false,
   },
   {
-    name: 'Database Management',
+    name: 'Banner',
     read: false,
     write: false,
     create: false,
   },
   {
-    name: 'Financial Management',
+    name: 'Push Notification',
     read: false,
     write: false,
     create: false,
   },
   {
-    name: 'Reporting',
+    name: 'Transaction',
     read: false,
     write: false,
     create: false,
   },
   {
-    name: 'API Control',
+    name: 'Role',
     read: false,
     write: false,
     create: false,
   },
   {
-    name: 'Repository Management',
+    name: 'User List',
     read: false,
     write: false,
     create: false,
-  },
-  {
-    name: 'Payroll',
-    read: false,
-    write: false,
-    create: false,
-  },
+  }
 ])
+
+const status = ref(true)
 
 const isSelectAll = ref(false)
 const role = ref('')
@@ -133,6 +129,7 @@ const onSubmit = () => {
   const rolePermissions = {
     name: role.value,
     permissions: permissions.value,
+    status: status.value
   }
 
   emit('update:rolePermissions', rolePermissions)
@@ -239,6 +236,26 @@ const onReset = () => {
               </tr>
             </template>
           </VTable>
+          <VRow
+            justify="space-between"
+            class="mb-3"
+            
+          >
+            <VCol
+              cols="8"
+            >
+              Status
+            </VCol>
+              <VSwitch
+                v-model="status"
+                color="warning"
+                :label="status ? 'Active' : 'Inactive'"
+                class="mr-4"
+
+              />
+     
+          </VRow>
+          <VDivider /> <br>
 
           <!-- 👉 Actions button -->
           <div class="d-flex align-center justify-center gap-4">

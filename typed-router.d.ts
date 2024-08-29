@@ -26,6 +26,10 @@ declare module 'vue-router/auto-routes' {
     'auth-create-password': RouteRecordInfo<'auth-create-password', '/auth/create-password', Record<never, never>, Record<never, never>>,
     'auth-login': RouteRecordInfo<'auth-login', '/auth/login', Record<never, never>, Record<never, never>>,
     'business-account': RouteRecordInfo<'business-account', '/business-account', Record<never, never>, Record<never, never>>,
+    'campaign-banner': RouteRecordInfo<'campaign-banner', '/campaign/banner', Record<never, never>, Record<never, never>>,
+    'campaign-banner-add-banner-tab': RouteRecordInfo<'campaign-banner-add-banner-tab', '/campaign/banner/add-banner/:tab', { tab: ParamValue<true> }, { tab: ParamValue<false> }>,
+    'campaign-notification': RouteRecordInfo<'campaign-notification', '/campaign/notification', Record<never, never>, Record<never, never>>,
+    'campaign-notification-add-notification': RouteRecordInfo<'campaign-notification-add-notification', '/campaign/notification/add-notification', Record<never, never>, Record<never, never>>,
     'dashboard': RouteRecordInfo<'dashboard', '/dashboard', Record<never, never>, Record<never, never>>,
     'login': RouteRecordInfo<'login', '/login', Record<never, never>, Record<never, never>>,
     'merchant': RouteRecordInfo<'merchant', '/merchant', Record<never, never>, Record<never, never>>,
@@ -34,5 +38,7 @@ declare module 'vue-router/auto-routes' {
     'report-transaction': RouteRecordInfo<'report-transaction', '/report/transaction', Record<never, never>, Record<never, never>>,
     'report-transaction-id': RouteRecordInfo<'report-transaction-id', '/report/transaction/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'second-page': RouteRecordInfo<'second-page', '/second-page', Record<never, never>, Record<never, never>>,
+    'users-list': RouteRecordInfo<'users-list', '/users/list', Record<never, never>, Record<never, never>>,
+    'users-role': RouteRecordInfo<'users-role', '/users/role', Record<never, never>, Record<never, never>>,
   }
 }

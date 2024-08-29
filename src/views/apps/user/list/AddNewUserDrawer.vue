@@ -16,13 +16,9 @@ const emit = defineEmits([
 const isFormValid = ref(false)
 const refForm = ref()
 const fullName = ref('')
-const userName = ref('')
 const email = ref('')
-const company = ref('')
-const country = ref()
 const contact = ref('')
 const role = ref()
-const plan = ref()
 const status = ref()
 
 // 👉 drawer close
@@ -40,12 +36,9 @@ const onSubmit = () => {
       emit('userData', {
         id: 0,
         fullName: fullName.value,
-        company: company.value,
         role: role.value,
-        country: country.value,
         contact: contact.value,
         email: email.value,
-        currentPlan: plan.value,
         status: status.value,
         avatar: '',
         billing: 'Auto Debit',
@@ -101,16 +94,6 @@ const handleDrawerModelValueUpdate = val => {
                 />
               </VCol>
 
-              <!-- 👉 Username -->
-              <VCol cols="12">
-                <AppTextField
-                  v-model="userName"
-                  :rules="[requiredValidator]"
-                  label="Username"
-                  placeholder="Johndoe"
-                />
-              </VCol>
-
               <!-- 👉 Email -->
               <VCol cols="12">
                 <AppTextField
@@ -118,27 +101,6 @@ const handleDrawerModelValueUpdate = val => {
                   :rules="[requiredValidator, emailValidator]"
                   label="Email"
                   placeholder="johndoe@email.com"
-                />
-              </VCol>
-
-              <!-- 👉 company -->
-              <VCol cols="12">
-                <AppTextField
-                  v-model="company"
-                  :rules="[requiredValidator]"
-                  label="Company"
-                  placeholder="PixInvent"
-                />
-              </VCol>
-
-              <!-- 👉 Country -->
-              <VCol cols="12">
-                <AppSelect
-                  v-model="country"
-                  label="Select Country"
-                  placeholder="Select Country"
-                  :rules="[requiredValidator]"
-                  :items="['USA', 'UK', 'India', 'Australia']"
                 />
               </VCol>
 
@@ -161,17 +123,6 @@ const handleDrawerModelValueUpdate = val => {
                   placeholder="Select Role"
                   :rules="[requiredValidator]"
                   :items="['Admin', 'Author', 'Editor', 'Maintainer', 'Subscriber']"
-                />
-              </VCol>
-
-              <!-- 👉 Plan -->
-              <VCol cols="12">
-                <AppSelect
-                  v-model="plan"
-                  label="Select Plan"
-                  placeholder="Select Plan"
-                  :rules="[requiredValidator]"
-                  :items="['Basic', 'Company', 'Enterprise', 'Team']"
                 />
               </VCol>
 

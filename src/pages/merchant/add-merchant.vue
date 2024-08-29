@@ -13,6 +13,8 @@
             v-model:image-preview="fileLogo"
             @update:imagePreview="fileLogo = $event"
             :btnTitle="'Upload Logo'"
+            warningMessage="Max size 6MB, file format jpeg, jpg, and png."
+            max-size="6000"
           />
         </VCol>
       </VRow>
@@ -186,6 +188,8 @@
             @update:imagePreview="fileLegalDocAktaPendirianAndPerubahan = $event"
             :btnTitle="'Upload Akta Pendirian & Perubahan'"
             :customFontSize="'8px'"
+            warningMessage="Max size 6MB, file format jpeg, jpg, and png."
+            max-size="6000"
           />
         </VCol>
         <VCol cols="12" md="6">
@@ -193,6 +197,8 @@
             v-model:image-preview="fileDirectorNPWP"
             @update:imagePreview="fileDirectorNPWP = $event"
             :btnTitle="'Upload Director NPWP'"
+            warningMessage="Max size 6MB, file format jpeg, jpg, and png."
+            max-size="6000"
           />
         </VCol>
         <VCol cols="12" md="6">
@@ -230,6 +236,8 @@
             @update:imagePreview="fileLegalDocAktaPendirianAndPerubahan = $event"
             :btnTitle="'Upload Akta Pendirian & Perubahan'"
             :customFontSize="'10px'"
+            warningMessage="Max size 6MB, file format jpeg, jpg, and png."
+            max-size="6000"
           />
         </VCol>
         <VCol cols="12" md="6">
@@ -238,6 +246,8 @@
             @update:imagePreview="fileSKMentriKehakiman = $event"
             :btnTitle="'Upload SK Mentri Kehakiman'"
             :customFontSize="'10px'"
+            warningMessage="Max size 6MB, file format jpeg, jpg, and png."
+            max-size="6000"
           />
         </VCol>
         <VCol cols="12" md="6">
@@ -245,6 +255,8 @@
             v-model:image-preview="fileBusinessNpwp"
             @update:imagePreview="fileBusinessNpwp = $event"
             :btnTitle="'Upload '"
+            warningMessage="Max size 6MB, file format jpeg, jpg, and png."
+            max-size="6000"
           />
         </VCol>
         <VCol cols="12" md="6">
@@ -252,6 +264,8 @@
             v-model:image-preview="fileTdp"
             @update:imagePreview="fileTdp = $event"
             :btnTitle="'Upload TDP/NIB'"
+            warningMessage="Max size 6MB, file format jpeg, jpg, and png."
+            max-size="6000"
           />
         </VCol>
         <VCol cols="12" md="6">
@@ -259,6 +273,8 @@
             v-model:image-preview="fileSiup"
             @update:imagePreview="fileSiup = $event"
             :btnTitle="'Upload SIUP (Optional)'"
+            warningMessage="Max size 6MB, file format jpeg, jpg, and png."
+            max-size="6000"
           />
         </VCol>
       </VRow>

@@ -12,7 +12,23 @@ export default [
   {
     title: 'My Store',
     to: { name: 'my-store-tab', params: { tab: 'store-preview' } },
-    icon: { icon: 'tabler-star' },
+    icon: { icon: 'tabler-building-store' },
+  },
+  {
+    title: 'Campaign',
+    icon: { icon: 'tabler-bell-ringing-2' },
+    children: [
+      {
+        title: 'Banner',
+        to: 'campaign-banner',
+      },
+      {
+        title: 'Push Notification',
+        to: 'campaign-notification',
+      },
+    ],
+    badgeContent: '2',
+    badgeClass: 'bg-error',
   },
   {
     title: 'Merchant',

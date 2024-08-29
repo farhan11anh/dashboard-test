@@ -11,6 +11,14 @@ const props = defineProps({
   customFontSize: {
     type: String,
     required: false,
+  },
+  warningMessage: {
+    type: String,
+    required: true,
+  },
+  maxSize: {
+    type: String,
+    required: true,
   }
 });
 
@@ -82,7 +90,7 @@ const resetImage = () => {
         </VCol>
         <VCol cols="12">
           <div class="file-guidelines">
-            <p>Max size 6MB, file format jpeg, jpg, and png.</p>
+            <p>{{ warningMessage }}</p>
           </div>
         </VCol>
       </VRow>
@@ -131,7 +139,7 @@ const resetImage = () => {
 
 .file-guidelines {
   margin-top: 10px;
-  text-align: center;
+  text-align: left;
   font-size: 0.9rem;
   color: #666;
 }
