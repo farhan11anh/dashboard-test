@@ -1,7 +1,7 @@
 <script setup>
-import CardInfo from "@/components/pages/my-store/CardInfo.vue";
 import StorePreview from "@/views/pages/my-store/StorePreview.vue";
 import CredentialAccess from "@/views/pages/my-store/CredentialAccess.vue";
+import CardInfoMyStore from "@/components/pages/my-store/CardInfoMyStore.vue";
 
 definePage({
   meta: {
@@ -33,7 +33,7 @@ const tabs = [
 <template>
   <VRow>
     <VCol cols="12" md="4">
-      <CardInfo
+      <CardInfoMyStore
         store-name="Ace Hardware"
         image="/src/assets/images/pages/5.jpg"
         title="Ace Hardware"

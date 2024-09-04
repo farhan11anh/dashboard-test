@@ -68,8 +68,12 @@ export default [
         title: 'List',
         to: 'users-list',
       },
+      {
+        title: 'Profile',
+        to: {name: 'users-profile-tab', params: { tab: 'approval' }},
+      },
     ],
-    badgeContent: '2',
+    badgeContent: '3',
     badgeClass: 'bg-error',
   },
   {

@@ -31,6 +31,8 @@ declare module 'vue' {
     CardAddEditDialog: typeof import('./src/components/dialogs/CardAddEditDialog.vue')['default']
     CardDetail: typeof import('./src/@core/components/cards/CardDetail.vue')['default']
     CardInfo: typeof import('./src/@core/components/cards/CardInfo.vue')['default']
+    CardInfoMyStore: typeof import('./src/components/pages/my-store/CardInfoMyStore.vue')['default']
+    CardInfoProfile: typeof import('./src/components/pages/profile/CardInfoProfile.vue')['default']
     CardStatisticReport: typeof import('./src/components/pages/report/CardStatisticReport.vue')['default']
     CardStatisticsHorizontal: typeof import('./src/@core/components/cards/CardStatisticsHorizontal.vue')['default']
     CardStatisticsVertical: typeof import('./src/@core/components/cards/CardStatisticsVertical.vue')['default']

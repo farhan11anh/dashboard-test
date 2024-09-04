@@ -34,11 +34,15 @@ declare module 'vue-router/auto-routes' {
     'login': RouteRecordInfo<'login', '/login', Record<never, never>, Record<never, never>>,
     'merchant': RouteRecordInfo<'merchant', '/merchant', Record<never, never>, Record<never, never>>,
     'merchant-add-merchant': RouteRecordInfo<'merchant-add-merchant', '/merchant/add-merchant', Record<never, never>, Record<never, never>>,
+    'merchant-approval-merchant': RouteRecordInfo<'merchant-approval-merchant', '/merchant/approval-merchant', Record<never, never>, Record<never, never>>,
+    'merchant-approval-merchant-id': RouteRecordInfo<'merchant-approval-merchant-id', '/merchant/approval-merchant/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'my-store-tab': RouteRecordInfo<'my-store-tab', '/my-store/:tab', { tab: ParamValue<true> }, { tab: ParamValue<false> }>,
     'report-transaction': RouteRecordInfo<'report-transaction', '/report/transaction', Record<never, never>, Record<never, never>>,
     'report-transaction-id': RouteRecordInfo<'report-transaction-id', '/report/transaction/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'second-page': RouteRecordInfo<'second-page', '/second-page', Record<never, never>, Record<never, never>>,
+    'settings-homepage-configuration': RouteRecordInfo<'settings-homepage-configuration', '/settings/homepage-configuration', Record<never, never>, Record<never, never>>,
     'users-list': RouteRecordInfo<'users-list', '/users/list', Record<never, never>, Record<never, never>>,
+    'users-profile-tab': RouteRecordInfo<'users-profile-tab', '/users/profile/:tab', { tab: ParamValue<true> }, { tab: ParamValue<false> }>,
     'users-role': RouteRecordInfo<'users-role', '/users/role', Record<never, never>, Record<never, never>>,
   }
 }
