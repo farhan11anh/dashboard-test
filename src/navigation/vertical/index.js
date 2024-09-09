@@ -81,9 +81,8 @@ export default [
     icon: { icon: 'tabler-settings' },
     children: [
       {
-        title: 'Landing',
-        to: 'second-page',
-        target: '_blank',
+        title: 'Homepage Configuration',
+        to: 'settings-homepage-configuration',
       },
       {
         title: 'Pricing',

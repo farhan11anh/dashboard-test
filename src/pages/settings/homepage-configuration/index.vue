@@ -4,9 +4,13 @@ import AppSelect from "@/@core/components/app-form-elements/AppSelect.vue";
 import AppTextField from "@/@core/components/app-form-elements/AppTextField.vue";
 import AppTitle from "@/@core/components/title/AppTitle.vue";
 import { requiredValidator } from "@/@core/utils/validators";
+import PreviewHomepageConfiguration from "@/views/pages/settings/homepage-configuration/PreviewHomepageConfiguration.vue";
 import { VForm } from "vuetify/components/VForm";
 
 const refForm = ref < VForm > null;
+
+import { useHomepageConfigurationStore } from "@/stores/homepage-configuration";
+const homepageConfigurationStore = useHomepageConfigurationStore();
 
 const rulesMerchant = [
   (fileList) =>
@@ -31,6 +35,8 @@ const merchant = ref([
   },
 ]);
 
+const imgLifeStyleFeature = ref([])
+
 const todaysPick = ref([
   {
     imgTodaysPick: "",
@@ -53,12 +59,12 @@ const entertainment = ref({
 });
 
 const news = ref([
-    {
-        imgNews: "",
-        period: "",
-        title: "",
-    }
-])
+  {
+    imgNews: "",
+    period: "",
+    title: "",
+  },
+]);
 
 const onAddBanner = () => {
   banner.value.push({
@@ -80,25 +86,38 @@ const onAddNews = () => {
     period: "",
     title: "",
   });
-}
+};
 
 const onSave = () => {
-    const data = {
-        banner: banner.value,
-        merchant: merchant.value,
-        todaysPick: todaysPick.value,
-        entertainment: entertainment.value,
-        news: news.value
-    }
+  const data = {
+    banner: banner.value,
+    merchant: merchant.value,
+    todaysPick: todaysPick.value,
+    entertainment: entertainment.value,
+    news: news.value,
+  };
   console.log(data);
 };
+
+const getUrlImage = (event, index) => {
+
+  if(event) {
+    imgLifeStyleFeature.value[index] = URL.createObjectURL(event)
+  } else {
+    imgLifeStyleFeature.value[index] = null
+  }
+
+  homepageConfigurationStore.updateImgLifestyleFeature(URL.createObjectURL(event), index)
+  // console.log(homepageConfigurationStore.imgLifestyleFeature, 'data dari store');
+  
+}
 </script>
 
 <template>
   <VForm @submit.prevent ref="refForm">
     <VRow justify="space-between">
       <VCol cols="12" md="8">
-        <AppTitle title="Homepage Configuration" />
+        <div class="title">Homepage Configuration</div>
         <RouterLink to="#banner">Banner</RouterLink> |
         <RouterLink to="#lifestyle">LifeStyle Feature</RouterLink> |
         <RouterLink to="#today">Today Picks</RouterLink> |
@@ -180,6 +199,7 @@ const onSave = () => {
                       accept="image/png, image/jpeg, image/bmp, image/jpg"
                       placeholder="Choose Merchant"
                       prepend-icon="tabler-camera"
+                      @update:model-value="getUrlImage($event, merchant.indexOf(item))"
                     />
                   </VCol>
                   <VCol cols="12" md="4">
@@ -265,9 +285,7 @@ const onSave = () => {
           <VCol cols="12" id="news">
             <div class="card">
               <div class="card-header">News & Update</div>
-              <div class="card-body"
-                v-for="item in news" :key="item"
-              >
+              <div class="card-body" v-for="item in news" :key="item">
                 <VRow justify="space-between">
                   <VCol cols="12" md="8">
                     <VFileInput
@@ -302,7 +320,6 @@ const onSave = () => {
                       Add News
                     </VBtn>
                   </VCol>
-
                 </VRow>
               </div>
             </div>
@@ -314,15 +331,22 @@ const onSave = () => {
         </VRow>
       </VCol>
       <VCol cols="12" md="4">
-
-        
-        
-        </VCol>
+        <PreviewHomepageConfiguration
+          :lifestylesImg="imgLifeStyleFeature"
+        />
+      </VCol>
     </VRow>
   </VForm>
 </template>
 
 <style lang="scss">
+.title {
+  font-weight: 1000;
+  font-size: 35px;
+  line-height: 20px;
+  width: 100%;
+  margin-bottom: 1rem;
+}
 .card {
   background-color: #f8f9fb;
   border: 1px solid #e2e2e3;
@@ -335,7 +359,7 @@ const onSave = () => {
   font-size: 26px;
   line-height: 20px;
   color: #000000;
-  background-color: #e2e2e3;
+  background-color: #f4f4f775;
   border-bottom: 1px solid #e2e2e3;
   padding: 2rem;
   width: 100%;

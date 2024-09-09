@@ -6,6 +6,9 @@ import EcommercePopularProducts from '@/views/dashboards/ecommerce/EcommercePopu
 import EcommerceRevenueReport from '@/views/dashboards/ecommerce/EcommerceRevenueReport.vue'
 import EcommerceStatistics from '@/views/dashboards/ecommerce/EcommerceStatistics.vue'
 
+$api.get('/dashboard').then((response) => {
+  console.log(response)
+})
 
 </script>
 
