@@ -15,20 +15,18 @@ export const useAuth = defineStore("auth", {
   getters: {
     user(state) {
       return {
-        ...state.user_data?.eml && state.user_data || useCookie("user").value
+        ...state.user_data?.email && state.user_data || useCookie("userData").value
       };
     },
-    email: (state) => state.user_email || useCookie("user").value?.eml,
-    token: (state) => state.token_data || useCookie("token").value,
+    email: (state) => state.user_email || useCookie("user").value?.email,
+    token: (state) => state.token_data || useCookie("accessToken").value,
     isAuth: (state) => {
-      return state.isAuth_data || !!useCookie("token").value
+      return state.isAuth_data || !!useCookie("accessToken").value
     },
     isLoading: (state) => state.isLoading_data,
     isSoftLoading: (state) => state.isSoftLoading_data,
     // role: (state) => state.role_data.name && state.role_data || useCookie("rbac").value || useLocalStorage("rbac").value && JSON.parse(useLocalStorage("rbac").value),
-    role: (state) => state.role_data.name && state.role_data || useCookie("rbac").value,
-
-    testCookie: (state) => useCookie("accessToken").value
+    // role: (state) => state.role_data.name && state.role_data || useCookie("rbac").value,
   },
 //   actions: {
 //     async login(values) {

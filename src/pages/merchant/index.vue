@@ -19,10 +19,6 @@ const headers = [
     sortable: false,
   },
   {
-    title: 'SKU',
-    key: 'sku',
-  },
-  {
     title: 'Register Date',
     key: 'registerDate',
   },
@@ -279,7 +275,7 @@ const products = ref(
 
 )
 
-const totalProduct = computed(() => productsData.value.total)
+const totalProduct = computed(() => 5)
 
 const deleteProduct = async id => {
   await $api(`apps/ecommerce/products/${ id }`, { method: 'DELETE' })

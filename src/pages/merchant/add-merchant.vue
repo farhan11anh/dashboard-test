@@ -2,9 +2,7 @@
   <AppTitle title="Add Merchant" />
 
   <VCard class="mt-5">
-    <VCardTitle>
-      Business Information
-    </VCardTitle>
+    <VCardTitle> Business Information </VCardTitle>
     <VCardText>
       <br />
       <VRow>
@@ -174,18 +172,18 @@
     </VCardText>
   </VCard>
 
-  <VCard class="mt-5" >
+  <VCard class="mt-5">
     <VCardText>
-      <VCardTitle>
-        Director's Document
-      </VCardTitle>
+      <VCardTitle> Director's Document </VCardTitle>
       <br />
 
       <VRow>
         <VCol cols="12" md="6">
           <CustomUploadAndPreview
             v-model:image-preview="fileLegalDocAktaPendirianAndPerubahan"
-            @update:imagePreview="fileLegalDocAktaPendirianAndPerubahan = $event"
+            @update:imagePreview="
+              fileLegalDocAktaPendirianAndPerubahan = $event
+            "
             :btnTitle="'Upload Akta Pendirian & Perubahan'"
             :customFontSize="'8px'"
             warningMessage="Max size 6MB, file format jpeg, jpg, and png."
@@ -226,14 +224,16 @@
     </VCardText>
   </VCard>
 
-  <VCard class="mt-5" >
+  <VCard class="mt-5">
     <VCardText>
       <VCardTitle>Legals Document</VCardTitle>
       <VRow>
         <VCol cols="12" md="6">
           <CustomUploadAndPreview
             v-model:image-preview="fileLegalDocAktaPendirianAndPerubahan"
-            @update:imagePreview="fileLegalDocAktaPendirianAndPerubahan = $event"
+            @update:imagePreview="
+              fileLegalDocAktaPendirianAndPerubahan = $event
+            "
             :btnTitle="'Upload Akta Pendirian & Perubahan'"
             :customFontSize="'10px'"
             warningMessage="Max size 6MB, file format jpeg, jpg, and png."
@@ -281,7 +281,7 @@
     </VCardText>
   </VCard>
 
-  <VCard class="mt-5" >
+  <VCard class="mt-5">
     <VCardTitle>PIC Business Merchant</VCardTitle>
     <VCardText>
       <VRow>
@@ -293,11 +293,7 @@
           />
         </VCol>
         <VCol cols="12" md="6">
-          <AppTextField
-            label="Email"
-            name="email"
-            placeholder="Input Email"
-          />
+          <AppTextField label="Email" name="email" placeholder="Input Email" />
         </VCol>
         <VCol cols="12" md="6">
           <AppTextField
@@ -310,7 +306,7 @@
     </VCardText>
   </VCard>
 
-  <VCard class="mt-5" >
+  <VCard class="mt-5">
     <VCardTitle>PIC Techical Merchant</VCardTitle>
     <VCardText>
       <VRow>
@@ -322,17 +318,38 @@
           />
         </VCol>
         <VCol cols="12" md="6">
-          <AppTextField
-            label="Email"
-            name="email"
-            placeholder="Input Email"
-          />
+          <AppTextField label="Email" name="email" placeholder="Input Email" />
         </VCol>
         <VCol cols="12" md="6">
           <AppTextField
             label="Mobile Phone Number"
             name="phone"
             placeholder="Input Mobile Phone Number"
+          />
+        </VCol>
+      </VRow>
+    </VCardText>
+  </VCard>
+
+  <VCard class="mt-5">
+    <VCardTitle>Bank Account</VCardTitle>
+    <VCardText>
+      <VRow>
+        <VCol cols="12" md="6">
+          <AppTextField label="Bank" name="bank" placeholder="Input Bank" />
+        </VCol>
+        <VCol cols="12" md="6">
+          <AppTextField
+            label="Bank Account Name"
+            name="bankAccName"
+            placeholder="Input Bank Account Name"
+          />
+        </VCol>
+        <VCol cols="12" md="6">
+          <AppTextField
+            label="Bank Account Number"
+            name="bankAccNumber"
+            placeholder="Input Bank Account Number"
           />
         </VCol>
       </VRow>
@@ -353,21 +370,12 @@
 
   <VCard class="mt-5">
     <VCardTitle>
-      <VRow 
-        justify="space-between"
-      >
-        <VCol>
-          Status
-        </VCol>
+      <VRow justify="space-between">
+        <VCol> Status </VCol>
         <VCol cols="1">
-          <VRow
-            justify="end"
-          >
-            <VCol >
-              <VSwitch
-                v-model="selectedSwitch"
-                color="warning"
-              />
+          <VRow justify="end">
+            <VCol>
+              <VSwitch v-model="selectedSwitch" color="warning" />
             </VCol>
           </VRow>
         </VCol>
@@ -375,30 +383,34 @@
     </VCardTitle>
   </VCard>
 
-  <VRow
-    justify="end"
-    class="mt-5"
-  >
-    <VCol cols=2 >
-      <div class="d-flex gap-4 align-center flex-wrap">
-        <VBtn>Save</VBtn>
-
-        <VBtn
+  <VRow justify="end" class="mt-5">
+    <VCol cols="6">
+      <div class="d-flex gap-4 align-center flex-wrap flex-row-reverse">
+        <VBtn variant="tonal" color="secondary"> Cancel </VBtn>
+        <!-- <VBtn>Save</VBtn> -->
+        <GlobalConfirmationDialog
+          @update:is-dialog-visible="hola($event)"
+          button-name="Save"
+          title="Confirmation"
+          description="Are you sure to Save ?"
+        />
+        <GlobalConfirmationDialog
+          @update:is-dialog-visible="hola($event)"
+          button-name="Save as Draft"
+          title="Confirmation"
+          description="Are you sure to Save as Draft ?"
           variant="tonal"
-          color="secondary"
-        >
-          Cancel
-        </VBtn>
+          color="#ADD8E6"
+        />
       </div>
     </VCol>
-
   </VRow>
 </template>
 
 <script setup>
 import { ref } from "vue";
 
-const examplePreview = ref("")
+const examplePreview = ref("");
 
 const fileLogo = ref(null);
 const fileDirectorIdCard = ref(null);
@@ -431,7 +443,6 @@ const handleFileChange = (event) => {
       reader.onload = (e) => {
         imagePreview.value = e.target.result;
         console.log(e.target.result);
-
       };
       reader.readAsDataURL(file);
     } else {
@@ -447,37 +458,36 @@ const resetImage = () => {
 
 const radioContent = [
   {
-    title: 'API',
-    desc: 'Merchant have a API for connection',
-    value: 'api',
+    title: "API",
+    desc: "Merchant have a API for connection",
+    value: "api",
     icon: {
-      icon: 'tabler-star',
-      size: '28',
+      icon: "tabler-star",
+      size: "28",
     },
   },
   {
-    title: 'Webview',
-    desc: 'Merchant have webview for integration',
-    value: 'personal',
+    title: "Webview",
+    desc: "Merchant have webview for integration",
+    value: "personal",
     icon: {
-      icon: 'tabler-star',
-      size: '28',
+      icon: "tabler-star",
+      size: "28",
     },
   },
   {
-    title: 'Custom',
-    desc: 'Merchant not have API or Webview',
-    value: 'enterprise',
+    title: "Custom",
+    desc: "Merchant not have API or Webview",
+    value: "enterprise",
     icon: {
-      icon: 'tabler-star',
-      size: '28',
+      icon: "tabler-star",
+      size: "28",
     },
   },
-]
+];
 
-const selectedRadio = ref('api')
-const selectedSwitch = ref(true)
-
+const selectedRadio = ref("api");
+const selectedSwitch = ref(true);
 </script>
 
 <style scoped>
@@ -525,5 +535,4 @@ const selectedSwitch = ref(true)
   font-size: 0.9rem;
   color: #666;
 }
-
 </style>

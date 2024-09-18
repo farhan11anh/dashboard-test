@@ -18,16 +18,50 @@ definePage({
 })
 
 
-
 const form = ref({
   email: '',
   password: '',
-  remember: false,
+  // remember: false,
 })
+
+const refVForm = ref();
 
 const isPasswordVisible = ref(false)
 const authThemeImg = useGenerateImageVariant(authV2LoginIllustrationLight, authV2LoginIllustrationDark, authV2LoginIllustrationBorderedLight, authV2LoginIllustrationBorderedDark, true)
 const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
+const rememberMe = ref(false)
+
+
+const login = async () => {
+  try {
+    const res = await $api.post('/auth/login', {
+        email: form.value.email,
+        password: form.value.password
+    })
+
+    console.log(res.data);
+    
+
+    // const { accessToken, userData, userAbilityRules } = res
+
+    // useCookie('userAbilityRules').value = userAbilityRules
+    // ability.update(userAbilityRules)
+    // useCookie('userData').value = userData
+    // useCookie('accessToken').value = accessToken
+    await nextTick(() => {
+      // router.replace(route.query.to ? String(route.query.to) : '/')
+    })
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+const onSubmit = () => {
+  refVForm.value?.validate().then(({ valid: isValid }) => {
+    if (isValid)
+      login()
+  })
+}
 </script>
 
 <template>
@@ -89,7 +123,9 @@ const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
           </p>
         </VCardText>
         <VCardText>
-          <VForm @submit.prevent="() => {}">
+          <VForm
+            ref="refVForm"
+            @submit.prevent="onSubmit">
             <VRow>
               <!-- email -->
               <VCol cols="12">
@@ -98,7 +134,8 @@ const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
                   autofocus
                   label="Email or Username"
                   type="email"
-                  placeholder="johndoe@email.com"
+                  placeholder="Input Email"
+                  :rules="[requiredValidator, emailValidator]"
                 />
               </VCol>
 
@@ -111,11 +148,12 @@ const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
                   :type="isPasswordVisible ? 'text' : 'password'"
                   :append-inner-icon="isPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
                   @click:append-inner="isPasswordVisible = !isPasswordVisible"
+                  :rules="[requiredValidator]"
                 />
 
                 <div class="d-flex align-center flex-wrap justify-space-between my-6">
                   <VCheckbox
-                    v-model="form.remember"
+                    v-model="rememberMe"
                     label="Remember me"
                   />
                   <RouterLink

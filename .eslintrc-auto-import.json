@@ -353,6 +353,7 @@
     "watchTriggerable": true,
     "watchWithFilter": true,
     "whenever": true,
-    "useAbility": true
+    "useAbility": true,
+    "$fetcher": true
   }
 }
