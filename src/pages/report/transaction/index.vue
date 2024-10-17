@@ -329,7 +329,7 @@ const products = ref(
 ]
 )
 
-const totalProduct = computed(() => productsData.value.total)
+const totalProduct = computed(() => 10)
 
 const deleteProduct = async id => {
   await $api(`apps/ecommerce/products/${ id }`, { method: 'DELETE' })

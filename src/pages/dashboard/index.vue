@@ -13,48 +13,8 @@ import EcommerceStatistics from '@/views/dashboards/ecommerce/EcommerceStatistic
     <!-- 👉 Congratulation John -->
     <VCol
       cols="12"
-      md="5"
-      lg="4"
     >
       <EcommerceCongratulationsJohn />
-    </VCol>
-
-    <!-- 👉 Ecommerce Transition -->
-    <VCol
-      cols="12"
-      md="7"
-      lg="8"
-    >
-      <EcommerceStatistics class="h-100" />
-    </VCol>
-
-    <VCol
-      cols="12"
-      lg="4"
-    >
-      <VRow>
-        <!-- 👉 Popular Products -->
-        <VCol
-            cols="12"
-            >
-            <EcommercePopularProducts />
-        </VCol>
-
-        <!-- 👉 Generated Leads -->
-        <VCol
-          cols="12"
-        >
-          <EcommerceGeneratedLeads />
-        </VCol>
-      </VRow>
-    </VCol>
-
-    <!-- 👉 Revenue Report -->
-    <VCol
-      cols="12"
-      lg="8"
-    >
-      <EcommerceRevenueReport />
     </VCol>
   </VRow>
 </template>
