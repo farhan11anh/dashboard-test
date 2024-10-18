@@ -46,7 +46,8 @@ export default [
     children: [
       {
         title: 'Transaction',
-        to: 'report-transaction',
+        // to: 'report-transaction',
+        to: { name: 'report-transaction', query: { page: '1' } },
       },
       // {
       //   title: 'Approval',

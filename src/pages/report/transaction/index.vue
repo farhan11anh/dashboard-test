@@ -5,7 +5,12 @@ import AppSelect from '@/@core/components/app-form-elements/AppSelect.vue';
 import LogisticsCardStatistics from '@/views/apps/logistics/LogisticsCardStatistics.vue'
 import CardStatitiscticsApproval from '@/views/pages/report/transaction/CardStatitiscticsApproval.vue';
 
+import { useReportTransactionStore } from '@/stores/report-transaction';
+
 const router = useRouter()
+const route = useRoute()
+
+const reportTransactionStore = useReportTransactionStore()
 
 const headers = [
   {
@@ -53,51 +58,10 @@ const headers = [
 ]
 
 const dateTime = ref();
-const legalName = ref()
-const brandName = ref()
 const merchantId = ref()
+const transactionId = ref()
 const statusSelected = ref()
-const searchQuery = ref('')
 const selectedRows = ref([])
-
-
-const legalList = ref([
-  {
-    title: 'Accessories',
-    value: 'Accessories',
-  },
-  {
-    title: 'Home Decor',
-    value: 'Home Decor',
-  },
-  {
-    title: 'Electronics',
-    value: 'Electronics',
-  },
-  {
-    title: 'Shoes',
-    value: 'Shoes',
-  },
-  {
-    title: 'Office',
-    value: 'Office',
-  },
-  {
-    title: 'Games',
-    value: 'Games',
-  },
-])
-
-const transactionList = ref([
-  {
-    title: 'In Stock',
-    value: true,
-  },
-  {
-    title: 'Out of Stock',
-    value: false,
-  },
-])
 
 const merchantList = ref(
   [
@@ -185,23 +149,23 @@ const resolveStatus = statusMsg => {
     }
 }
 
-const {
-  data: productsData,
-  execute: fetchProducts,
-} = await useApi(createUrl('/apps/ecommerce/products', {
-  query: {
-    q: searchQuery,
-    brandName: brandName,
-    legal: legalName,
-    time: dateTime,
-    merchantId: merchantId,
-    status: statusSelected,
-    page,
-    itemsPerPage,
-    sortBy,
-    orderBy,
-  },
-}))
+// const {
+//   data: productsData,
+//   execute: fetchProducts,
+// } = await useApi(createUrl('/apps/ecommerce/products', {
+//   query: {
+//     q: searchQuery,
+//     brandName: brandName,
+//     legal: legalName,
+//     time: dateTime,
+//     merchantId: merchantId,
+//     status: statusSelected,
+//     page,
+//     itemsPerPage,
+//     sortBy,
+//     orderBy,
+//   },
+// }))
 
 // const products = computed(() => productsData.value.products)
 const products = ref(
@@ -329,7 +293,7 @@ const products = ref(
 ]
 )
 
-const totalProduct = computed(() => 10)
+const totalProduct = computed(() => 100)
 
 const deleteProduct = async id => {
   await $api(`apps/ecommerce/products/${ id }`, { method: 'DELETE' })
@@ -342,14 +306,35 @@ const deleteProduct = async id => {
   // Refetch products
   fetchProducts()
 }
+
+
+let currentQuery = { ...route.query }
+console.log(route);
+
+const updateQuery = (key, value) => {
+  currentQuery = { ...currentQuery, [key]: value }
+  router.push({ query: currentQuery })
+}
+
+watch(
+  [page, dateTime, merchantId, transactionId, statusSelected, itemsPerPage],
+  ([newPage, newDateTime, newMerchantId, newTransactionId, newStatusSelected, newItemsPerPage]) => {
+    updateQuery('page', newPage)
+    updateQuery('dateTime', newDateTime)
+    updateQuery('merchantId', newMerchantId)
+    updateQuery('transactionId', newTransactionId)
+    updateQuery('status', newStatusSelected)
+    updateQuery('itemsPerPage', newItemsPerPage)
+  }
+)
 </script>
 
 <template>
-    <AppTitle title="Transaction Report" />
+    <!-- <AppTitle title="Transaction Report" /> -->
   <VRow class="match-height">
-    <VCol cols="12">
+    <!-- <VCol cols="12">
       <CardStatitiscticsApproval />
-    </VCol>
+    </VCol> -->
 
     <VCol
       cols="12"
@@ -367,7 +352,7 @@ const deleteProduct = async id => {
             sm="4"
           >
             <AppDateTimePicker
-              v-model="date"
+              v-model="dateTime"
               placeholder="Select Transaction Date"
               append-icon="tabler-calendar"
               
@@ -558,12 +543,14 @@ const deleteProduct = async id => {
         </template>
 
         <!-- pagination -->
+         
         <template #bottom>
           <TablePagination
             v-model:page="page"
             :items-per-page="itemsPerPage"
             :total-items="totalProduct"
           />
+          {{ page }}
         </template>
       </VDataTableServer>
     </VCard>
