@@ -4,6 +4,8 @@ import ScrollToTop from "@core/components/ScrollToTop.vue";
 import initCore from "@core/initCore";
 import { initConfigStore, useConfigStore } from "@core/stores/config";
 import { hexToRgb } from "@core/utils/colorConverter";
+import { useLayoutStore } from "./stores/layout";
+import { computed } from "vue";
 
 const { global } = useTheme();
 
@@ -12,17 +14,22 @@ initCore();
 initConfigStore();
 
 const configStore = useConfigStore();
+const layoutStore = useLayoutStore();
 
+const isLoading = ref(true);
 
-const isLoading = ref(true)
+setTimeout(() => {
+  isLoading.value = false;
+}, 2000);
 
-setTimeout(()=> {
-  isLoading.value = false
-}, 2000)
+const snackbar = computed(() => layoutStore.snackbar);
 </script>
 
 <template>
-  <div style="position: relative;" :style="isLoading ? {height: '100vh', overflow: 'hidden'} : {}" >
+  <div
+    style="position: relative"
+    :style="isLoading ? { height: '100vh', overflow: 'hidden' } : {}"
+  >
     <div class="layer-loader" v-if="isLoading">
       <span class="loader"></span>
     </div>
@@ -34,10 +41,35 @@ setTimeout(()=> {
         )}`"
       >
         <RouterView />
-  
+
         <ScrollToTop />
       </VApp>
     </VLocaleProvider>
+
+    <VSnackbar
+      v-model="snackbar"
+      location="bottom end"
+      :color="layoutStore.snackbar_status === 'success' ? '#28C76F' : '#FF9494'"
+      multi-line
+    >
+      <VRow>
+        <VCol cols="2">
+          <VIcon :icon="layoutStore.snackbar_status === 'success' ? 'tabler-square-rounded-check' : 'tabler-square-rounded-x'" size="32" color="white" />
+        </VCol>
+        <VCol cols="10">
+          <div class="text-white">
+            <h3 class="text-white">{{ layoutStore.snackbar_status.charAt(0).toUpperCase() + layoutStore.snackbar_status.slice(1) }}</h3>
+            {{ layoutStore.snackbar_message }}
+          </div>
+        </VCol>
+      </VRow>
+
+      <template #actions>
+        <VBtn color="primary" @click="layoutStore.setSnackbar(false)">
+          <VIcon icon="tabler-x" color="white" />
+        </VBtn>
+      </template>
+    </VSnackbar>
   </div>
 </template>
 
@@ -45,9 +77,12 @@ setTimeout(()=> {
 .layer-loader {
   position: fixed;
   z-index: 100000;
-  top: 0; bottom: 0; left: 0; right: 0;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   background-color: rgba(179, 128, 128, 0.418);
-  overflow:hidden;
+  overflow: hidden;
   height: 100vh;
 }
 .loader {

@@ -6,6 +6,7 @@ import authV2ResetPasswordIllustrationDark from '@images/pages/auth-v2-reset-pas
 import authV2ResetPasswordIllustrationLight from '@images/pages/auth-v2-reset-password-illustration-light.png'
 import authV2MaskDark from '@images/pages/misc-mask-dark.png'
 import authV2MaskLight from '@images/pages/misc-mask-light.png'
+import { useLayoutStore } from '@/stores/layout'
 
 definePage({
   meta: {
@@ -19,10 +20,24 @@ const form = ref({
   confirmPassword: '',
 })
 
+const layoutStore = useLayoutStore();
+
+const router = useRouter()
+
 const authThemeImg = useGenerateImageVariant(authV2ResetPasswordIllustrationLight, authV2ResetPasswordIllustrationDark)
 const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
 const isPasswordVisible = ref(false)
 const isConfirmPasswordVisible = ref(false)
+
+const onSubmit = () => {
+if(form.value.newPassword === form.value.confirmPassword) {
+  router.push({ name: 'login' })
+  layoutStore.setSnackbar(true, 'success', 'Created Password Success')
+}else{
+  layoutStore.setSnackbar(true, 'error', 'Created Password Failed')
+}
+
+}
 </script>
 
 <template>
@@ -85,7 +100,9 @@ const isConfirmPasswordVisible = ref(false)
         </VCardText>
 
         <VCardText>
-          <VForm @submit.prevent="() => {}">
+          <VForm @submit.prevent="() => {
+            onSubmit();
+          }">
             <VRow>
               <!-- password -->
               <VCol cols="12">

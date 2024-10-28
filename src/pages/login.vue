@@ -90,7 +90,7 @@ const login = async () => {
     useCookie('userData').value = userData
     useCookie('accessToken').value = data.access_token
     await nextTick(() => {
-      // router.replace(route.query.to ? String(route.query.to) : '/')
+      router.replace(route.query.to ? String(route.query.to) : '/')
     })
   } catch (err) {
     console.error(err)
