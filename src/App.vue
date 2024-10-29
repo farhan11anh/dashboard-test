@@ -16,11 +16,11 @@ initConfigStore();
 const configStore = useConfigStore();
 const layoutStore = useLayoutStore();
 
-const isLoading = ref(true);
+const isLoading = computed(() => layoutStore.isLoading);
 
-setTimeout(() => {
-  isLoading.value = false;
-}, 2000);
+// setTimeout(() => {
+//   isLoading.value = false;
+// }, 2000);
 
 const snackbar = computed(() => layoutStore.snackbar);
 </script>

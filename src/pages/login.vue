@@ -10,6 +10,8 @@ import authV2MaskLight from '@images/pages/misc-mask-light.png'
 import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
 import { themeConfig } from '@themeConfig'
 
+import { useLayoutStore } from '@/stores/layout'
+
 const authThemeImg = useGenerateImageVariant(authV2LoginIllustrationLight, authV2LoginIllustrationDark, authV2LoginIllustrationBorderedLight, authV2LoginIllustrationBorderedDark, true)
 const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
 
@@ -24,6 +26,7 @@ const isPasswordVisible = ref(false)
 const route = useRoute()
 const router = useRouter()
 const ability = useAbility()
+const layoutStore = useLayoutStore()
 
 const errors = ref({
   email: undefined,
@@ -90,10 +93,13 @@ const login = async () => {
     useCookie('userData').value = userData
     useCookie('accessToken').value = data.access_token
     await nextTick(() => {
-      router.replace(route.query.to ? String(route.query.to) : '/')
+      router.replace(route.query.to ? String(route.query.to) : '/');
+      layoutStore.setSnackbar(true, 'success', 'Login Success')
+
     })
   } catch (err) {
     console.error(err)
+    layoutStore.setSnackbar(true, 'error', 'Login Failed')
   }
 }
 

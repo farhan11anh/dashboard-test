@@ -88,6 +88,7 @@ $api.interceptors.response.use(
   },
   function (err) {
     return new Promise(function () {
+    useLayoutStore().setLoading(false);
     //   /resolve, reject/
     //   // clearTimeout(delay_on_isloading);
     //   // delay_on_isloading = setTimeout(() => {
@@ -121,8 +122,8 @@ $api.interceptors.response.use(
     //     // you can also redirect to /login if needed !
     //   }
     //   // err.response.data = JSON.parse(decrypt(err.response.data.data));
-    //   console.log(err);
-    //   throw err;
+      console.log(err);
+      throw err;
     });
   }
 );
