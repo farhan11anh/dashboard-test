@@ -16,7 +16,6 @@ $api.isCancel = axios.isCancel;
 */
 $api.interceptors.request.use(
   (config) => {
-    console.log(config.data);
     useLayoutStore().setLoading(true);
     
     // if (config?.params?.is_noloading || config?.data?.is_noloading) {

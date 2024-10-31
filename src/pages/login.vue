@@ -38,8 +38,8 @@ const refVForm = ref()
 const credentials = ref({
   // email: 'admin@demo.com',
   // password: 'admin',
-  email: 'john@mail.com',
-  password: 'changeme',
+  email: 'admin@bayarind.id',
+  password: 'admin1234',
 })
 
 const rememberMe = ref(false)
@@ -80,18 +80,27 @@ const login = async () => {
     console.log(res);
     
 
-    const { data, userAbilityRules } = res
+    const { responseData, userAbilityRules } = res
 
     const userData = {
       name: "John Doe",
       email: "johndoe@email.com",
       avatar: "/avatars/avatar-1.png",
+      Role: "Super Admin",
     }
-
     useCookie('userAbilityRules').value = 'admin'
     ability.update('admin')
-    useCookie('userData').value = userData
-    useCookie('accessToken').value = data.access_token
+    useCookie('accessToken').value = res?.data?.responseData?.token
+
+    if(res) {
+      await $api.get('/users/current')
+      .then((res) => {
+        userData.name = res.data.responseData.name == '' ? 'Admin' : res.data.responseData.name;
+        userData.email = res.data.responseData.email;
+        userData.Role = res.data.responseData.roleName;
+        useCookie('userData').value = userData
+      })
+    }
     await nextTick(() => {
       router.replace(route.query.to ? String(route.query.to) : '/');
       layoutStore.setSnackbar(true, 'success', 'Login Success')

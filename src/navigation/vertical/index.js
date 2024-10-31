@@ -97,6 +97,10 @@ export default [
         title: 'Profile',
         to: {name: 'users-profile-tab', params: { tab: 'approval' }},
       },
+      {
+        title: 'List',
+        to: 'users-list',
+      },
     ],
   },
 ]

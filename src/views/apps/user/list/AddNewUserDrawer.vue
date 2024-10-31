@@ -18,8 +18,6 @@ const refForm = ref()
 const fullName = ref('')
 const email = ref('')
 const contact = ref('')
-const role = ref()
-const status = ref()
 
 // 👉 drawer close
 const closeNavigationDrawer = () => {
@@ -34,14 +32,9 @@ const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
       emit('userData', {
-        id: 0,
-        fullName: fullName.value,
-        role: role.value,
-        contact: contact.value,
+        name: fullName.value,
+        phone: contact.value,
         email: email.value,
-        status: status.value,
-        avatar: '',
-        billing: 'Auto Debit',
       })
       emit('update:isDrawerOpen', false)
       nextTick(() => {
@@ -90,7 +83,7 @@ const handleDrawerModelValueUpdate = val => {
                   v-model="fullName"
                   :rules="[requiredValidator]"
                   label="Full Name"
-                  placeholder="John Doe"
+                  placeholder="Input Full Name"
                 />
               </VCol>
 
@@ -100,7 +93,7 @@ const handleDrawerModelValueUpdate = val => {
                   v-model="email"
                   :rules="[requiredValidator, emailValidator]"
                   label="Email"
-                  placeholder="johndoe@email.com"
+                  placeholder="Input Email"
                 />
               </VCol>
 
@@ -111,29 +104,7 @@ const handleDrawerModelValueUpdate = val => {
                   type="number"
                   :rules="[requiredValidator]"
                   label="Contact"
-                  placeholder="+1-541-754-3010"
-                />
-              </VCol>
-
-              <!-- 👉 Role -->
-              <VCol cols="12">
-                <AppSelect
-                  v-model="role"
-                  label="Select Role"
-                  placeholder="Select Role"
-                  :rules="[requiredValidator]"
-                  :items="['Admin', 'Author', 'Editor', 'Maintainer', 'Subscriber']"
-                />
-              </VCol>
-
-              <!-- 👉 Status -->
-              <VCol cols="12">
-                <AppSelect
-                  v-model="status"
-                  label="Select Status"
-                  placeholder="Select Status"
-                  :rules="[requiredValidator]"
-                  :items="[{ title: 'Active', value: 'active' }, { title: 'Inactive', value: 'inactive' }, { title: 'Pending', value: 'pending' }]"
+                  placeholder="Input Number Phone"
                 />
               </VCol>
 

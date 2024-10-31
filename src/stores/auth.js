@@ -1,10 +1,11 @@
+import { useCookie } from "@/@core/composable/useCookie";
 import { useLocalStorage } from "@vueuse/core";
 import { defineStore } from "pinia";
 // const nuxtApp = useNuxtApp()
 
 export const useAuth = defineStore("auth", {
   state: () => ({
-    user_data: {},
+    user_data: useCookie("userData").value || null,
     user_email: null,
     token_data: "",
     isAuth_data: false,

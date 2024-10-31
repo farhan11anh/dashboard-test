@@ -48,23 +48,23 @@ const items = ref([
     }
 ])
 
-const {
-  data: usersData,
-  execute: fetchUsers,
-} = await useApi(createUrl('/apps/users', {
-  query: {
-    q: searchQuery,
-    status: selectedStatus,
-    role: selectedRole,
-    itemsPerPage,
-    page,
-    sortBy,
-    orderBy,
-  },
-}))
+// const {
+//   data: usersData,
+//   execute: fetchUsers,
+// } = await useApi(createUrl('/apps/users', {
+//   query: {
+//     q: searchQuery,
+//     status: selectedStatus,
+//     role: selectedRole,
+//     itemsPerPage,
+//     page,
+//     sortBy,
+//     orderBy,
+//   },
+// }))
 
-const users = computed(() => usersData.value.users)
-const totalUsers = computed(() => usersData.value.totalUsers)
+const users = computed(() => {})
+const totalUsers = computed(() => 10)
 
 
 const resolveUserStatusVariant = stat => {

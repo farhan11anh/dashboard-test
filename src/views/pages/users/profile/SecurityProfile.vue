@@ -1,62 +1,40 @@
 <script setup>
+import { useChangePasswordStore } from '@/stores/profile/change-password';
+import { ref } from 'vue';
+
+const changePasswordStore = useChangePasswordStore();
+
 const isNewPasswordVisible = ref(false)
 const isConfirmPasswordVisible = ref(false)
-const smsVerificationNumber = ref('+1(968) 819-2547')
-const isTwoFactorDialogOpen = ref(false)
+const currentPassword = ref('')
+const newPassword = ref('')
+const confirmPassword = ref('')
 
-const recentDeviceHeader = [
-  {
-    title: 'BROWSER',
-    key: 'browser',
+const rulesMatchPassword = [
+  () => { 
+    if (confirmPassword.value === newPassword.value || confirmPassword.value === newPassword.value || confirmPassword.value === ''  || newPassword.value === '') return true
+    return 'Password does not match'
   },
-  {
-    title: 'DEVICE',
-    key: 'device',
-  },
-  {
-    title: 'LOCATION',
-    key: 'location',
-  },
-  {
-    title: 'RECENT ACTIVITY',
-    key: 'activity',
-  },
+  (value) => {
+    if(value === '') return true
+    const regex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[^a-zA-Z\d])[A-Za-z\d\S]{8,}$/;
+    if(regex.test(value)) return true
+    return 'Password must contain at least one uppercase, lowercase, special character and digit with min 8 chars'
+  }
 ]
 
-const recentDevices = [
-  {
-    browser: ' Chrome on Windows',
-    icon: 'tabler-brand-windows',
-    color: 'info',
-    device: 'HP Spectre 360',
-    location: 'Switzerland',
-    activity: '10, July 2021 20:07',
-  },
-  {
-    browser: 'Chrome on Android',
-    icon: 'tabler-brand-android',
-    color: 'success',
-    device: 'Oneplus 9 Pro',
-    location: 'Dubai',
-    activity: '14, July 2021 15:15',
-  },
-  {
-    browser: 'Chrome on macOS',
-    icon: 'tabler-brand-apple',
-    color: 'secondary',
-    device: 'Apple iMac',
-    location: 'India',
-    activity: '16, July 2021 16:17',
-  },
-  {
-    browser: 'Chrome on iPhone',
-    icon: 'tabler-device-mobile',
-    color: 'error',
-    device: 'iPhone 12x',
-    location: 'Australia',
-    activity: '13, July 2021 10:10',
-  },
-]
+const buttonDisabled = computed(() => {
+  return currentPassword.value === '' || newPassword.value === '' || confirmPassword.value === ''
+})
+
+const onChangePassword = async() => {
+    await changePasswordStore.changePassword({ currentPassword: currentPassword.value, newPassword: newPassword.value, confirmPassword: confirmPassword.value })
+     .then(() => {
+       currentPassword.value = ''
+       newPassword.value = ''
+       confirmPassword.value = ''
+     })
+}
 </script>
 
 <template>
@@ -74,13 +52,28 @@ const recentDevices = [
             text="Minimum 8 characters long, uppercase & symbol"
           />
 
-          <VForm @submit.prevent="() => { }">
+          <VForm ref="form" @submit.prevent="onChangePassword()">
             <VRow>
               <VCol
                 cols="12"
-                md="6"
+                md="4"
               >
                 <AppTextField
+                  v-model="currentPassword"
+                  label="Current Password"
+                  placeholder="············"
+                  :type="isNewPasswordVisible ? 'text' : 'password'"
+                  :append-inner-icon="isNewPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
+                  @click:append-inner="isNewPasswordVisible = !isNewPasswordVisible"
+                />
+              </VCol>
+              <VCol
+                cols="12"
+                md="4"
+              >
+                <AppTextField
+                  v-model="newPassword"
+                  :rules="rulesMatchPassword"
                   label="New Password"
                   placeholder="············"
                   :type="isNewPasswordVisible ? 'text' : 'password'"
@@ -90,9 +83,11 @@ const recentDevices = [
               </VCol>
               <VCol
                 cols="12"
-                md="6"
+                md="4"
               >
                 <AppTextField
+                  v-model="confirmPassword"
+                  :rules="rulesMatchPassword"
                   label="Confirm Password"
                   placeholder="············"
                   :type="isConfirmPasswordVisible ? 'text' : 'password'"
@@ -102,7 +97,7 @@ const recentDevices = [
               </VCol>
 
               <VCol cols="12">
-                <VBtn type="submit">
+                <VBtn type="submit" :disabled="buttonDisabled">
                   Change Password
                 </VBtn>
               </VCol>
@@ -111,40 +106,6 @@ const recentDevices = [
         </VCardText>
       </VCard>
     </VCol>
-
-    <VCol cols="12">
-      <!-- 👉 Recent devices -->
-
-      <VCard title="Recent devices">
-        <VDivider />
-        <VDataTable
-          :items="recentDevices"
-          :headers="recentDeviceHeader"
-          hide-default-footer
-          class="text-no-wrap"
-        >
-          <template #item.browser="{ item }">
-            <div class="d-flex align-center gap-x-4">
-              <VIcon
-                :icon="item.icon"
-                :color="item.color"
-                :size="22"
-              />
-              <div class="text-body-1 text-high-emphasis">
-                {{ item.browser }}
-              </div>
-            </div>
-          </template>
-          <!-- TODO Refactor this after vuetify provides proper solution for removing default footer -->
-          <template #bottom />
-        </VDataTable>
-      </VCard>
-    </VCol>
   </VRow>
 
-  <!-- 👉 Enable One Time Password Dialog -->
-  <TwoFactorAuthDialog
-    v-model:isDialogVisible="isTwoFactorDialogOpen"
-    :sms-code="smsVerificationNumber"
-  />
 </template>

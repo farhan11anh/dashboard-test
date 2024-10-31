@@ -1,160 +1,157 @@
 <script setup>
-import AddNewUserDrawer from '@/views/apps/user/list/AddNewUserDrawer.vue'
+import AddNewUserDrawer from "@/views/apps/user/list/AddNewUserDrawer.vue";
+import { useUsersListStore } from "@/stores/users/list";
+
+const usersListStore = useUsersListStore();
 
 // 👉 Store
-const searchQuery = ref('')
-const selectedRole = ref()
-const selectedStatus = ref()
+const searchQuery = ref("");
+const selectedRole = ref();
+const selectedStatus = ref();
 
 // Data table options
-const itemsPerPage = ref(10)
-const page = ref(1)
-const sortBy = ref()
-const orderBy = ref()
-const selectedRows = ref([])
+const itemsPerPage = ref(10);
+const page = ref(1);
+const sortBy = ref();
+const orderBy = ref();
+const selectedRows = ref([]);
 
-const updateOptions = options => {
-  sortBy.value = options.sortBy[0]?.key
-  orderBy.value = options.sortBy[0]?.order
-}
+const updateOptions = (options) => {
+  sortBy.value = options.sortBy[0]?.key;
+  orderBy.value = options.sortBy[0]?.order;
+};
 
 // Headers
 const headers = [
   {
-    title: 'Name',
-    key: 'user',
+    title: "Name",
+    key: "user",
   },
   {
-    title: 'Email',
-    key: 'email',
+    title: "Role",
+    key: "role",
   },
   {
-    title: 'Role',
-    key: 'role',
+    title: "Status",
+    key: "status",
   },
   {
-    title: 'Status',
-    key: 'status',
-  },
-  {
-    title: 'Actions',
-    key: 'actions',
+    title: "Actions",
+    key: "actions",
     sortable: false,
   },
-]
+];
 
-const {
-  data: usersData,
-  execute: fetchUsers,
-} = await useApi(createUrl('/apps/users', {
-  query: {
-    q: searchQuery,
-    status: selectedStatus,
-    role: selectedRole,
-    itemsPerPage,
-    page,
-    sortBy,
-    orderBy,
+// const {
+//   data: usersData,
+//   execute: fetchUsers,
+// } = await useApi(createUrl('/apps/users', {
+//   query: {
+//     q: searchQuery,
+//     status: selectedStatus,
+//     role: selectedRole,
+//     itemsPerPage,
+//     page,
+//     sortBy,
+//     orderBy,
+//   },
+// }))
+
+const users = [
+  {
+    fullName: "John Doe",
+    email: "bH7Zk@example.com",
+    role: "Admin",
+    status: "Active",
+    actions: "Edit",
   },
-}))
-
-const users = computed(() => usersData.value.users)
-const totalUsers = computed(() => usersData.value.totalUsers)
+];
+const totalUsers = computed(() => 10);
 
 // 👉 search filters
 const roles = [
   {
-    title: 'Admin',
-    value: 'admin',
+    title: "Admin",
+    value: "admin",
   },
   {
-    title: 'Author',
-    value: 'author',
+    title: "Author",
+    value: "author",
   },
   {
-    title: 'Editor',
-    value: 'editor',
+    title: "Editor",
+    value: "editor",
   },
   {
-    title: 'Maintainer',
-    value: 'maintainer',
+    title: "Maintainer",
+    value: "maintainer",
   },
   {
-    title: 'Subscriber',
-    value: 'subscriber',
+    title: "Subscriber",
+    value: "subscriber",
   },
-]
+];
 
 const plans = [
   {
-    title: 'Basic',
-    value: 'basic',
+    title: "Basic",
+    value: "basic",
   },
   {
-    title: 'Company',
-    value: 'company',
+    title: "Company",
+    value: "company",
   },
   {
-    title: 'Enterprise',
-    value: 'enterprise',
+    title: "Enterprise",
+    value: "enterprise",
   },
   {
-    title: 'Team',
-    value: 'team',
+    title: "Team",
+    value: "team",
   },
-]
+];
 
 const status = [
   {
-    title: 'Pending',
-    value: 'pending',
+    title: "Pending",
+    value: "pending",
   },
   {
-    title: 'Active',
-    value: 'active',
+    title: "Active",
+    value: "active",
   },
   {
-    title: 'Inactive',
-    value: 'inactive',
+    title: "Inactive",
+    value: "inactive",
   },
-]
+];
 
+const resolveUserStatusVariant = (stat) => {
+  const statLowerCase = stat.toLowerCase();
+  if (statLowerCase === "pending") return "warning";
+  if (statLowerCase === "active") return "success";
+  if (statLowerCase === "inactive") return "secondary";
 
-const resolveUserStatusVariant = stat => {
-  const statLowerCase = stat.toLowerCase()
-  if (statLowerCase === 'pending')
-    return 'warning'
-  if (statLowerCase === 'active')
-    return 'success'
-  if (statLowerCase === 'inactive')
-    return 'secondary'
-  
-  return 'primary'
-}
+  return "primary";
+};
 
-const isAddNewUserDrawerVisible = ref(false)
+const isAddNewUserDrawerVisible = ref(false);
 
-const addNewUser = async userData => {
-  await $api('/apps/users', {
-    method: 'POST',
-    body: userData,
-  })
+const addNewUser = async (userData) => {
+  await usersListStore.addUser(userData);
 
-  // Refetch User
-  fetchUsers()
-}
+};
 
-const deleteUser = async id => {
-  await $api(`/apps/users/${ id }`, { method: 'DELETE' })
+const deleteUser = async (id) => {
+  await $api(`/apps/users/${id}`, { method: "DELETE" });
 
   // Delete from selectedRows
-  const index = selectedRows.value.findIndex(row => row === id)
-  if (index !== -1)
-    selectedRows.value.splice(index, 1)
+  const index = selectedRows.value.findIndex((row) => row === id);
+  if (index !== -1) selectedRows.value.splice(index, 1);
 
   // Refetch User
-  fetchUsers()
-}
+  fetchUsers();
+};
 </script>
 
 <template>
@@ -167,10 +164,7 @@ const deleteUser = async id => {
       <VCardText>
         <VRow>
           <!-- 👉 Select Role -->
-          <VCol
-            cols="12"
-            sm="6"
-          >
+          <VCol cols="12" sm="6">
             <AppSelect
               v-model="selectedRole"
               placeholder="Select Role"
@@ -181,10 +175,7 @@ const deleteUser = async id => {
           </VCol>
 
           <!-- 👉 Select Status -->
-          <VCol
-            cols="12"
-            sm="6"
-          >
+          <VCol cols="12" sm="6">
             <AppSelect
               v-model="selectedStatus"
               placeholder="Select Status"
@@ -209,7 +200,7 @@ const deleteUser = async id => {
               { value: 100, title: '100' },
               { value: -1, title: 'All' },
             ]"
-            style="inline-size: 6.25rem;"
+            style="inline-size: 6.25rem"
             @update:model-value="itemsPerPage = parseInt($event, 10)"
           />
         </div>
@@ -217,19 +208,12 @@ const deleteUser = async id => {
 
         <div class="app-user-search-filter d-flex align-center flex-wrap gap-4">
           <!-- 👉 Search  -->
-          <div style="inline-size: 15.625rem;">
-            <AppTextField
-              v-model="searchQuery"
-              placeholder="Search User"
-            />
+          <div style="inline-size: 15.625rem">
+            <AppTextField v-model="searchQuery" placeholder="Search User" />
           </div>
 
           <!-- 👉 Export button -->
-          <VBtn
-            variant="tonal"
-            color="secondary"
-            prepend-icon="tabler-upload"
-          >
+          <VBtn variant="tonal" color="secondary" prepend-icon="tabler-upload">
             Export
           </VBtn>
 
@@ -261,15 +245,20 @@ const deleteUser = async id => {
         <!-- User -->
         <template #item.user="{ item }">
           <div class="d-flex align-center gap-x-4">
+            <VAvatar
+              size="34"
+              :variant="!item.avatar ? 'tonal' : undefined"
+            >
+              <VImg v-if="item.avatar" :src="item.avatar" />
+              <span v-else>{{ avatarText(item.fullName) }}</span>
+            </VAvatar>
             <div class="d-flex flex-column">
               <h6 class="text-base">
-                <RouterLink
-                  to=""
-                  class="font-weight-medium text-link"
-                >
                   {{ item.fullName }}
-                </RouterLink>
               </h6>
+              <div class="text-sm">
+                {{ item.email }}
+              </div>
             </div>
           </div>
         </template>
@@ -312,15 +301,13 @@ const deleteUser = async id => {
             <VIcon icon="tabler-eye" />
           </IconBtn>
 
-          <VBtn
-            icon
-            variant="text"
-            color="medium-emphasis"
-          >
+          <VBtn icon variant="text" color="medium-emphasis">
             <VIcon icon="tabler-dots-vertical" />
             <VMenu activator="parent">
               <VList>
-                <VListItem :to="{ name: 'apps-user-view-id', params: { id: item.id } }">
+                <VListItem
+                  :to="{ name: 'apps-user-view-id', params: { id: item.id } }"
+                >
                   <template #prepend>
                     <VIcon icon="tabler-eye" />
                   </template>
