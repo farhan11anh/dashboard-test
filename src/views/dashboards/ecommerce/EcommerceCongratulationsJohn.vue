@@ -1,7 +1,8 @@
 <script setup>
 import congoImg from '@images/illustrations/congo-illustration.png'
-import { useAuth } from '@/stores/auth';
+import { useAuthStore } from '@/stores/auth';
 import { computed } from 'vue';
+import { useCookie } from '@/@core/composable/useCookie';
 
 const time = computed(() => {
   const currentHour = new Date().getHours();
@@ -17,7 +18,12 @@ const time = computed(() => {
   }
 })
 
-const authStore = useAuth()
+const name = computed(() => {
+  const userData = useCookie("userData").value
+  return userData?.name && userData?.name.charAt(0).toUpperCase() + userData?.name.slice(1) || 'Admin'
+})
+
+const authStore = useAuthStore()
 </script>
 
 <template>
@@ -26,7 +32,7 @@ const authStore = useAuth()
       <VCol cols="8">
         <VCardText style="height: 184px" >
           <h5 class="text-h5 text-no-wrap">
-            Welcome {{ authStore?.user?.name || 'Admin' }} 🎉
+            Welcome {{ name }}🎉
           </h5>
           <p class="mb-2">
             Good {{ time }}

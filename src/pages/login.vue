@@ -9,11 +9,15 @@ import authV2MaskDark from '@images/pages/misc-mask-dark.png'
 import authV2MaskLight from '@images/pages/misc-mask-light.png'
 import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
 import { themeConfig } from '@themeConfig'
+import { useAuthStore } from '@/stores/auth'
 
 import { useLayoutStore } from '@/stores/layout'
+import { useCookie } from '@/@core/composable/useCookie'
 
 const authThemeImg = useGenerateImageVariant(authV2LoginIllustrationLight, authV2LoginIllustrationDark, authV2LoginIllustrationBorderedLight, authV2LoginIllustrationBorderedDark, true)
 const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
+
+const authStore = useAuthStore()
 
 definePage({
   meta: {
@@ -38,8 +42,8 @@ const refVForm = ref()
 const credentials = ref({
   // email: 'admin@demo.com',
   // password: 'admin',
-  email: 'admin@bayarind.id',
-  password: 'admin1234',
+  email: 'muhammad.farhan@bayarind.id',
+  password: 'Admin123_',
 })
 
 const rememberMe = ref(false)
@@ -95,7 +99,9 @@ const login = async () => {
     if(res) {
       await $api.get('/users/current')
       .then((res) => {
-        userData.name = res.data.responseData.name == '' ? 'Admin' : res.data.responseData.name;
+        console.log(res);
+        
+        userData.name = res.data.responseData.name == '' ? 'Admin' : res.data.responseData.name ;
         userData.email = res.data.responseData.email;
         userData.Role = res.data.responseData.roleName;
         useCookie('userData').value = userData
@@ -107,7 +113,6 @@ const login = async () => {
 
     })
   } catch (err) {
-    console.error(err)
     layoutStore.setSnackbar(true, 'error', 'Login Failed')
   }
 }
@@ -217,7 +222,7 @@ const onSubmit = () => {
                   />
                   <RouterLink
                     class="text-primary ms-2 mb-1"
-                    :to="{ name: '' }"
+                    to="/auth/forgot-password"
                   >
                     Forgot Password?
                   </RouterLink>

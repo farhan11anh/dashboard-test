@@ -80,15 +80,7 @@ const resolveUserStatusVariant = stat => {
 }
 
 const deleteUser = async id => {
-  await $api(`/apps/users/${ id }`, { method: 'DELETE' })
 
-  // Delete from selectedRows
-  const index = selectedRows.value.findIndex(row => row === id)
-  if (index !== -1)
-    selectedRows.value.splice(index, 1)
-
-  // Refetch User
-  fetchUsers()
 }
 </script>
 

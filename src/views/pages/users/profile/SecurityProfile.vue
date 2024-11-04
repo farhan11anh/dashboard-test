@@ -6,6 +6,7 @@ const changePasswordStore = useChangePasswordStore();
 
 const isNewPasswordVisible = ref(false)
 const isConfirmPasswordVisible = ref(false)
+const isCurrentPasswordVisible = ref(false)
 const currentPassword = ref('')
 const newPassword = ref('')
 const confirmPassword = ref('')
@@ -62,9 +63,9 @@ const onChangePassword = async() => {
                   v-model="currentPassword"
                   label="Current Password"
                   placeholder="············"
-                  :type="isNewPasswordVisible ? 'text' : 'password'"
-                  :append-inner-icon="isNewPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
-                  @click:append-inner="isNewPasswordVisible = !isNewPasswordVisible"
+                  :type="isCurrentPasswordVisible ? 'text' : 'password'"
+                  :append-inner-icon="isCurrentPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
+                  @click:append-inner="isCurrentPasswordVisible = !isCurrentPasswordVisible"
                 />
               </VCol>
               <VCol

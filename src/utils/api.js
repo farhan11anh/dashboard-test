@@ -1,5 +1,7 @@
 import axios from "axios";
 import { useLayoutStore } from "@/stores/layout";
+import { useRouter } from "vue-router";
+import { useAuthStore } from "@/stores/auth";
 
 export const $api = axios.create({
     baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
@@ -88,6 +90,14 @@ $api.interceptors.response.use(
   function (err) {
     return new Promise(function () {
     useLayoutStore().setLoading(false);
+    console.log(err?.response?.status, 'status yang ada di api');
+
+    if(err?.response?.status == 401){
+      useAuthStore().logout();
+      window.location.href = '/login'
+      useLayoutStore().setSnackbar(true, 'error', 'Session Expired Please Login Again')
+    }
+    
     //   /resolve, reject/
     //   // clearTimeout(delay_on_isloading);
     //   // delay_on_isloading = setTimeout(() => {
@@ -121,7 +131,6 @@ $api.interceptors.response.use(
     //     // you can also redirect to /login if needed !
     //   }
     //   // err.response.data = JSON.parse(decrypt(err.response.data.data));
-      console.log(err);
       throw err;
     });
   }

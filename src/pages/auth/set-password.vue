@@ -35,11 +35,11 @@ const isConfirmPasswordVisible = ref(false)
 
 const onSubmit = () => {
 if(form.value.newPassword === form.value.confirmPassword) {
-  authStore.setPassword(
+  authStore.resetPassword(
     {
       password: form.value.newPassword,
       confirmPassword: form.value.confirmPassword,
-      createPasswordToken: route.query.token
+      resetPasswordToken: route.query.token
     }
   )
   .then(() => {
@@ -105,10 +105,10 @@ if(form.value.newPassword === form.value.confirmPassword) {
       >
         <VCardText>
           <h4 class="text-h4 mb-1">
-            Create Password 🔒
+            Reset Password 🔒
           </h4>
           <p class="mb-0">
-            Create a Password to login to the dashboard
+            Reset a Password to login to the dashboard
           </p>
         </VCardText>
 
@@ -148,7 +148,7 @@ if(form.value.newPassword === form.value.confirmPassword) {
                   block
                   type="submit"
                 >
-                  Create Password
+                  Reset Password
                 </VBtn>
               </VCol>
 
