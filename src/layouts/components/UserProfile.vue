@@ -1,4 +1,6 @@
 <script setup>
+import { useCookie } from '@/@core/composable/useCookie';
+import { firstLetterUppercase } from '@/utils/firstlatterUppercase';
 import avatar1 from '@images/avatars/avatar-1.png'
 
 const router = useRouter()
@@ -74,9 +76,9 @@ const logout = async () => {
             </template>
 
             <VListItemTitle class="font-weight-semibold">
-              John Doe
+              {{ firstLetterUppercase(useCookie('userData').value.name) }}
             </VListItemTitle>
-            <VListItemSubtitle>Admin</VListItemSubtitle>
+            <VListItemSubtitle>{{ (useCookie('userData').value.Role) }}</VListItemSubtitle>
           </VListItem>
 
           <VDivider class="my-2" />

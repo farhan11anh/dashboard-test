@@ -1,4 +1,3 @@
-import { set } from '@vueuse/core';
 import { defineStore } from 'pinia';
 
 export const useLayoutStore = defineStore('layout', {
@@ -27,8 +26,6 @@ export const useLayoutStore = defineStore('layout', {
       this.snackbar_data = isSnackbar;
       this.snackbar_message_data = message;
       this.snackbar_status_data = status;
-      console.log(this.snackbar_message_data);
-      
       setTimeout(() => {
         this.snackbar_data = false;
       }, 3000);

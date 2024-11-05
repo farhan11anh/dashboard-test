@@ -80,12 +80,7 @@ const login = async () => {
         email: credentials.value.email,
         password: credentials.value.password
     })
-
-    console.log(res);
-    
-
-    const { responseData, userAbilityRules } = res
-
+    const { responseData, userAbilityRules } = res.data
     const userData = {
       name: "John Doe",
       email: "johndoe@email.com",
@@ -94,13 +89,12 @@ const login = async () => {
     }
     useCookie('userAbilityRules').value = 'admin'
     ability.update('admin')
+
     useCookie('accessToken').value = res?.data?.responseData?.token
 
     if(res) {
       await $api.get('/users/current')
       .then((res) => {
-        console.log(res);
-        
         userData.name = res.data.responseData.name == '' ? 'Admin' : res.data.responseData.name ;
         userData.email = res.data.responseData.email;
         userData.Role = res.data.responseData.roleName;
@@ -110,7 +104,6 @@ const login = async () => {
     await nextTick(() => {
       router.replace(route.query.to ? String(route.query.to) : '/');
       layoutStore.setSnackbar(true, 'success', 'Login Success')
-
     })
   } catch (err) {
     layoutStore.setSnackbar(true, 'error', 'Login Failed')

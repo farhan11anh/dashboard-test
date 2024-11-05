@@ -1,4 +1,6 @@
 <script setup>
+import { useCookie } from '@/@core/composable/useCookie';
+import { firstLetterUppercase } from '@/utils/firstlatterUppercase';
 import p5 from '@images/pages/5.jpg'
 </script>
 
@@ -17,7 +19,7 @@ import p5 from '@images/pages/5.jpg'
             </div>
 
         </VRow>
-        <VCardTitle class="text-center" >Isfan Syahreza</VCardTitle>
+        <VCardTitle class="text-center" >{{ firstLetterUppercase(useCookie('userData').value.name) }}</VCardTitle>
         <VRow 
             justify="center" 
             class="pa-5 mb-4"
@@ -101,10 +103,9 @@ import p5 from '@images/pages/5.jpg'
 
         <VDivider class="my-4" />
 
-        <p><strong>Email :</strong> <span>shalam@gmail.com</span></p>
+        <p><strong>Email :</strong> <span>{{ useCookie('userData').value.email }}</span></p>
         <p><strong>Status :</strong> <span>Active</span></p>
-        <p><strong>Role :</strong> <span>Super Admin</span></p>
-        <p><strong>Contact :</strong> <span>Jakarta</span></p>
+        <p><strong>Role :</strong> <span>{{ useCookie('userData').value.Role }}</span></p>
     </VCardText>
   </VCard>
 </template>

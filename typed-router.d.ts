@@ -39,6 +39,7 @@ declare module 'vue-router/auto-routes' {
     'merchant-approval-merchant': RouteRecordInfo<'merchant-approval-merchant', '/merchant/approval-merchant', Record<never, never>, Record<never, never>>,
     'merchant-approval-merchant-id': RouteRecordInfo<'merchant-approval-merchant-id', '/merchant/approval-merchant/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'my-store-tab': RouteRecordInfo<'my-store-tab', '/my-store/:tab', { tab: ParamValue<true> }, { tab: ParamValue<false> }>,
+    'not-found': RouteRecordInfo<'not-found', '/notFound', Record<never, never>, Record<never, never>>,
     'report-transaction': RouteRecordInfo<'report-transaction', '/report/transaction', Record<never, never>, Record<never, never>>,
     'report-transaction-id': RouteRecordInfo<'report-transaction-id', '/report/transaction/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'second-page': RouteRecordInfo<'second-page', '/second-page', Record<never, never>, Record<never, never>>,

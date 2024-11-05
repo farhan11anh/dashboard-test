@@ -354,6 +354,8 @@
     "watchWithFilter": true,
     "whenever": true,
     "useAbility": true,
-    "$fetcher": true
+    "$fetcher": true,
+    "firstL": true,
+    "firstLetterUppercase": true
   }
 }

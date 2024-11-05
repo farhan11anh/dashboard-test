@@ -3,6 +3,7 @@ import congoImg from '@images/illustrations/congo-illustration.png'
 import { useAuthStore } from '@/stores/auth';
 import { computed } from 'vue';
 import { useCookie } from '@/@core/composable/useCookie';
+import { firstLetterUppercase } from '@/utils/firstlatterUppercase';
 
 const time = computed(() => {
   const currentHour = new Date().getHours();
@@ -18,11 +19,6 @@ const time = computed(() => {
   }
 })
 
-const name = computed(() => {
-  const userData = useCookie("userData").value
-  return userData?.name && userData?.name.charAt(0).toUpperCase() + userData?.name.slice(1) || 'Admin'
-})
-
 const authStore = useAuthStore()
 </script>
 
@@ -32,7 +28,7 @@ const authStore = useAuthStore()
       <VCol cols="8">
         <VCardText style="height: 184px" >
           <h5 class="text-h5 text-no-wrap">
-            Welcome {{ name }}🎉
+            Welcome {{ useCookie('userData').value.name !== "" && firstLetterUppercase(useCookie('userData').value.name) || "Admin" }}🎉
           </h5>
           <p class="mb-2">
             Good {{ time }}
