@@ -86,6 +86,7 @@ const login = async () => {
       email: "johndoe@email.com",
       avatar: "/avatars/avatar-1.png",
       Role: "Super Admin",
+      isActive: true
     }
     useCookie('userAbilityRules').value = 'admin'
     ability.update('admin')
@@ -98,6 +99,7 @@ const login = async () => {
         userData.name = res.data.responseData.name == '' ? 'Admin' : res.data.responseData.name ;
         userData.email = res.data.responseData.email;
         userData.Role = res.data.responseData.roleName;
+        userData.isActive = res.data.responseData.isActive;
         useCookie('userData').value = userData
       })
     }

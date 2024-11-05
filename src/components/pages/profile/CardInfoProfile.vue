@@ -104,7 +104,7 @@ import p5 from '@images/pages/5.jpg'
         <VDivider class="my-4" />
 
         <p><strong>Email :</strong> <span>{{ useCookie('userData').value.email }}</span></p>
-        <p><strong>Status :</strong> <span>Active</span></p>
+        <p><strong>Status :</strong> <span>{{ useCookie('userData').value.isActive === 1 ? 'Active' : 'Inactive' }}</span></p>
         <p><strong>Role :</strong> <span>{{ useCookie('userData').value.Role }}</span></p>
     </VCardText>
   </VCard>

@@ -15,11 +15,11 @@ const activeTab = computed({
   set: () => route.params.tab,
 });
 const tabs = [
-  {
-    title: "Approval",
-    icon: "tabler-users",
-    tab: "approval",
-  },
+  // {
+  //   title: "Approval",
+  //   icon: "tabler-users",
+  //   tab: "approval",
+  // },
   {
     title: "Security",
     icon: "tabler-lock",

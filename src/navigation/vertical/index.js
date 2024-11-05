@@ -25,7 +25,7 @@ export default [
       },
       {
         title: 'Profile',
-        to: {name: 'users-profile-tab', params: { tab: 'approval' }},
+        to: {name: 'users-profile-tab', params: { tab: 'security' }},
       },
       {
         title: 'List',

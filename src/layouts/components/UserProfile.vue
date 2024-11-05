@@ -76,9 +76,9 @@ const logout = async () => {
             </template>
 
             <VListItemTitle class="font-weight-semibold">
-              {{ firstLetterUppercase(useCookie('userData').value.name) }}
+              {{ firstLetterUppercase(useCookie('userData')?.value?.name || "Admin") }}
             </VListItemTitle>
-            <VListItemSubtitle>{{ (useCookie('userData').value.Role) }}</VListItemSubtitle>
+            <VListItemSubtitle>{{ (useCookie('userData')?.value?.Role) }}</VListItemSubtitle>
           </VListItem>
 
           <VDivider class="my-2" />

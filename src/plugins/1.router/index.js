@@ -38,7 +38,6 @@ router.beforeEach(async (to, from, next) => {
   const token = useCookie('accessToken').value; // ambil token dari localStorage
   if (token) {
     try {
-      
       // Call API untuk cek token
       await $api.get('/users/current');
       next(); // Token valid, lanjutkan navigasi
