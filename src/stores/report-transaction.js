@@ -5,9 +5,9 @@ export const useReportTransactionStore = defineStore('report-transaction', {
   state: () => ({
     items_data : [],
     meta_data : {
-      total : 0,
-      per_page : 0,
-      current_page : 0,
+      totalItems : 0,
+      totalPages : 0,
+      page : 0,
     },
   }),
 
@@ -19,10 +19,33 @@ export const useReportTransactionStore = defineStore('report-transaction', {
 
   // Actions: Methods to modify the state (can be async)
   actions: {
-    getItems(params){
-      return this.$api.get('/report/transaction', {params}).then((response) => {
-        this.items_data = response.data.data
-        this.meta_data = response.data.meta
+    async getItems(params){
+      new Promise((resolve, reject) => {
+       $api.get('/orders', {params: params})
+         .then((response) => {
+           this.items_data = response.data.responseData.Items
+           const { totalItems, totalPages, page, limit } = response.data.responseData
+           this.meta_data = { totalItems, totalPages, page, limit }
+           resolve()
+         })
+         .catch((error) => {
+           console.log(error);
+           reject(error)
+         })
+      })
+    },
+
+    async getDetails(id) {
+      new Promise((resolve, reject) => {
+        $api.get('/orders/' + id)
+          .then((response) => {
+            this.items_data = response.data.responseData
+            resolve()
+          })
+          .catch((error) => {
+            console.log(error);
+            reject(error)
+          })
       })
     }
   },

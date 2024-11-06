@@ -18,6 +18,7 @@ const emit = defineEmits(['update:page'])
 
 const updatePage = value => {
   emit('update:page', value)
+  
 }
 </script>
 

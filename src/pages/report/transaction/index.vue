@@ -6,6 +6,8 @@ import LogisticsCardStatistics from '@/views/apps/logistics/LogisticsCardStatist
 import CardStatitiscticsApproval from '@/views/pages/report/transaction/CardStatitiscticsApproval.vue';
 
 import { useReportTransactionStore } from '@/stores/report-transaction';
+import { onMounted } from 'vue';
+import { get } from '@vueuse/core';
 
 const router = useRouter()
 const route = useRoute()
@@ -15,36 +17,36 @@ const reportTransactionStore = useReportTransactionStore()
 const headers = [
   {
     title: 'Transaction Date',
-    key: 'tDate',
+    key: 'transactionDate',
   },
   {
     title: 'Payment Date',
-    key: 'pDate',
+    key: 'paymentDateTime',
   },
   {
     title: 'Merchant ID',
-    key: 'mId',
+    key: 'merchantCode',
     sortable: false,
   },
   {
     title: 'Brand Name',
-    key: 'bName',
+    key: 'partnerName',
   },
   {
     title: 'Transaction ID',
-    key: 'tId',
+    key: 'TransactionNo',
   },
   {
     title: 'Virtual Account Number',
-    key: 'VAN',
+    key: 'customerAccount',
   },
   {
     title: 'Customer Name',
-    key: 'cName',
+    key: 'customerName',
   },
   {
     title: 'Amount Total',
-    key: 'aTotal',
+    key: 'totalAmount',
   },
   {
     title: 'Status',
@@ -78,14 +80,35 @@ const merchantList = ref(
 
 const statusList = ref([
     {
-        title: 'Active',
-        value: true
+        title: 'Paid',
+        value: 'paid'
     },
     {
-        title: 'Inactive',
-        value: false
+        title: 'Pending',
+        value: 'pending'
+    },
+    {
+        title: 'Cancel',
+        value: 'cancel'
     }
 ])
+
+onMounted(() => {
+  getDataTransaction();
+})
+
+const getDataTransaction = () => {
+  reportTransactionStore.getItems({
+    page: page.value,
+    limit: itemsPerPage.value,
+    sortBy: sortBy.value,
+    orderBy: orderBy.value,
+    dateTime: dateTime.value,
+    merchantId: merchantId.value,
+    transactionId: transactionId.value,
+    status: statusSelected.value
+  })
+}
 
 // Data table options
 const itemsPerPage = ref(10)
@@ -98,202 +121,9 @@ const updateOptions = options => {
   orderBy.value = options.sortBy[0]?.order
 }
 
-const resolveCategory = category => {
-  if (category === 'Accessories')
-    return {
-      color: 'error',
-      icon: 'tabler-device-watch',
-    }
-  if (category === 'Home Decor')
-    return {
-      color: 'info',
-      icon: 'tabler-home',
-    }
-  if (category === 'Electronics')
-    return {
-      color: 'primary',
-      icon: 'tabler-device-imac',
-    }
-  if (category === 'Shoes')
-    return {
-      color: 'success',
-      icon: 'tabler-shoe',
-    }
-  if (category === 'Office')
-    return {
-      color: 'warning',
-      icon: 'tabler-briefcase',
-    }
-  if (category === 'Games')
-    return {
-      color: 'primary',
-      icon: 'tabler-device-gamepad-2',
-    }
-}
+const products = computed(() => reportTransactionStore.items)
 
-const resolveStatus = statusMsg => {
-  if (statusMsg === 'paid')
-    return {
-      text: 'Active',
-      color: 'warning',
-    }
-  if (statusMsg === 'Published')
-    return {
-      text: 'Publish',
-      color: 'success',
-    }
-  if (statusMsg === 'unpaid')
-    return {
-      text: 'Inactive',
-      color: 'error',
-    }
-}
-
-// const {
-//   data: productsData,
-//   execute: fetchProducts,
-// } = await useApi(createUrl('/apps/ecommerce/products', {
-//   query: {
-//     q: searchQuery,
-//     brandName: brandName,
-//     legal: legalName,
-//     time: dateTime,
-//     merchantId: merchantId,
-//     status: statusSelected,
-//     page,
-//     itemsPerPage,
-//     sortBy,
-//     orderBy,
-//   },
-// }))
-
-// const products = computed(() => productsData.value.products)
-const products = ref(
-  [
-    {
-        "tDate": "2024-08-20",
-        "pDate": "2024-08-21",
-        "mId": "MID001",
-        "bName": "Business One",
-        "tId": "TID1001",
-        "VAN": "VAN1001",
-        "cName": "Client A",
-        "aTotal": 1500.00,
-        "status": "paid",
-        "action": "paid"
-    },
-    {
-        "tDate": "2024-08-21",
-        "pDate": "2024-08-22",
-        "mId": "MID002",
-        "bName": "Business Two",
-        "tId": "TID1002",
-        "VAN": "VAN1002",
-        "cName": "Client B",
-        "aTotal": 2500.00,
-        "status": "unpaid",
-        "action": "unpaid"
-    },
-    {
-        "tDate": "2024-08-22",
-        "pDate": "2024-08-23",
-        "mId": "MID003",
-        "bName": "Business Three",
-        "tId": "TID1003",
-        "VAN": "VAN1003",
-        "cName": "Client C",
-        "aTotal": 500.00,
-        "status": "paid",
-        "action": "paid"
-    },
-    {
-        "tDate": "2024-08-23",
-        "pDate": "2024-08-24",
-        "mId": "MID004",
-        "bName": "Business Four",
-        "tId": "TID1004",
-        "VAN": "VAN1004",
-        "cName": "Client D",
-        "aTotal": 3000.00,
-        "status": "unpaid",
-        "action": "unpaid"
-    },
-    {
-        "tDate": "2024-08-24",
-        "pDate": "2024-08-25",
-        "mId": "MID005",
-        "bName": "Business Five",
-        "tId": "TID1005",
-        "VAN": "VAN1005",
-        "cName": "Client E",
-        "aTotal": 1000.00,
-        "status": "paid",
-        "action": "paid"
-    },
-    {
-        "tDate": "2024-08-25",
-        "pDate": "2024-08-26",
-        "mId": "MID006",
-        "bName": "Business Six",
-        "tId": "TID1006",
-        "VAN": "VAN1006",
-        "cName": "Client F",
-        "aTotal": 4500.00,
-        "status": "unpaid",
-        "action": "unpaid"
-    },
-    {
-        "tDate": "2024-08-26",
-        "pDate": "2024-08-27",
-        "mId": "MID007",
-        "bName": "Business Seven",
-        "tId": "TID1007",
-        "VAN": "VAN1007",
-        "cName": "Client G",
-        "aTotal": 2000.00,
-        "status": "paid",
-        "action": "paid"
-    },
-    {
-        "tDate": "2024-08-27",
-        "pDate": "2024-08-28",
-        "mId": "MID008",
-        "bName": "Business Eight",
-        "tId": "TID1008",
-        "VAN": "VAN1008",
-        "cName": "Client H",
-        "aTotal": 3500.00,
-        "status": "unpaid",
-        "action": "unpaid"
-    },
-    {
-        "tDate": "2024-08-28",
-        "pDate": "2024-08-29",
-        "mId": "MID009",
-        "bName": "Business Nine",
-        "tId": "TID1009",
-        "VAN": "VAN1009",
-        "cName": "Client I",
-        "aTotal": 1800.00,
-        "status": "paid",
-        "action": "paid"
-    },
-    {
-        "tDate": "2024-08-29",
-        "pDate": "2024-08-30",
-        "mId": "MID010",
-        "bName": "Business Ten",
-        "tId": "TID1010",
-        "VAN": "VAN1010",
-        "cName": "Client J",
-        "aTotal": 2200.00,
-        "status": "unpaid",
-        "action": "unpaid"
-    }
-]
-)
-
-const totalProduct = computed(() => 100)
+const totalProduct = computed(() => reportTransactionStore.meta.totalPages)
 
 const deleteProduct = async id => {
   await $api(`apps/ecommerce/products/${ id }`, { method: 'DELETE' })
@@ -309,7 +139,6 @@ const deleteProduct = async id => {
 
 
 let currentQuery = { ...route.query }
-console.log(route);
 
 const updateQuery = (key, value) => {
   currentQuery = { ...currentQuery, [key]: value }
@@ -317,36 +146,32 @@ const updateQuery = (key, value) => {
 }
 
 watch(
-  [page, dateTime, merchantId, transactionId, statusSelected, itemsPerPage],
-  ([newPage, newDateTime, newMerchantId, newTransactionId, newStatusSelected, newItemsPerPage]) => {
-    updateQuery('page', newPage)
-    updateQuery('dateTime', newDateTime)
-    updateQuery('merchantId', newMerchantId)
-    updateQuery('transactionId', newTransactionId)
-    updateQuery('status', newStatusSelected)
-    updateQuery('itemsPerPage', newItemsPerPage)
+  [()=>route.query ,page, dateTime, merchantId, transactionId, statusSelected, itemsPerPage],
+  ([newQuery,newPage, newDateTime, newMerchantId, newTransactionId, newStatusSelected, newItemsPerPage], [oldQuery, oldPage, oldDateTime, oldMerchantId, oldTransactionId, oldStatusSelected, oldItemsPerPage]) => {
+    if(newQuery !== oldQuery) {
+      getDataTransaction()
+    }
+    if(newPage !== oldPage) updateQuery('page', newPage)
+    if(newDateTime !== oldDateTime) updateQuery('dateTime', newDateTime)
+    if(newMerchantId !== oldMerchantId) updateQuery('merchantId', newMerchantId)
+    if(newTransactionId !== oldTransactionId) updateQuery('transactionId', newTransactionId)
+    if(newStatusSelected !== oldStatusSelected) updateQuery('status', newStatusSelected)
+    if(newItemsPerPage !== oldItemsPerPage) updateQuery('itemsPerPage', newItemsPerPage)
   }
 )
 </script>
 
 <template>
-    <!-- <AppTitle title="Transaction Report" /> -->
   <VRow class="match-height">
-    <!-- <VCol cols="12">
-      <CardStatitiscticsApproval />
-    </VCol> -->
-
     <VCol
       cols="12"
     >
-    <!-- 👉 products -->
     <VCard
       title=""
       class="mb-6"
     >
       <VCardText>
         <VRow>
-          <!-- 👉 Date time -->
           <VCol
             cols="12"
             sm="4"
@@ -359,7 +184,6 @@ watch(
             />
           </VCol>
 
-          <!-- 👉 Legal Name -->
           <VCol
             cols="12"
             sm="4"
@@ -367,8 +191,8 @@ watch(
             <AppAutocomplete
               v-model="merchantId"
               placeholder="Merchant ID"
-              :items="products.map(product =>{ 
-                return {'title': product.mId, 'value': product.mId} 
+              :items="products?.map(product =>{ 
+                return {'title': product.merchantCode, 'value': product.merchantCode} 
                 }) "
               clearable
               clear-icon="tabler-x"
@@ -466,45 +290,19 @@ watch(
         class="text-no-wrap"
         @update:options="updateOptions"
       >
-        <!-- product  -->
-        <template #item.mId="{ item }">
-          <div>
-            {{ item.mId }}
-          </div>
-        </template>
 
-        <!-- category -->
-        <template #item.category="{ item }">
-          <VAvatar
-            size="30"
-            variant="tonal"
-            :color="resolveCategory(item.category)?.color"
-            class="me-4"
-          >
-            <VIcon
-              :icon="resolveCategory(item.category)?.icon"
-              size="18"
-            />
-          </VAvatar>
-          <span class="text-body-1 text-high-emphasis">{{ item.category }}</span>
-        </template>
-
-        <!-- stock -->
-        <template #item.tDate="{ item }">
+        <template #item.transactionDate="{ item }">
           <div class="d-flex align-center gap-x-4">
-            <div class="cursor-pointer" @click="router.push('/report/transaction/'+ item.mId)" > {{ item.tDate }} </div>
+            <div class="cursor-pointer" @click="router.push('/report/transaction/'+ item.id)" > {{ item.transactionDate }} </div>
           </div>
         </template>
 
-        <!-- status -->
         <template #item.status="{ item }">
-          <VChip
-            v-bind="resolveStatus(item.status)"
-            density="default"
-            label
-            size="small"
-          />
+          <div>
+            Paid --
+          </div>
         </template>
+
 
         <!-- Actions -->
         <template #item.actions="{ item }">

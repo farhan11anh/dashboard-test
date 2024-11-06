@@ -1,9 +1,12 @@
 <script setup>
 import AddNewUserDrawer from "@/views/apps/user/list/AddNewUserDrawer.vue";
 import { useUsersListStore } from "@/stores/users/list";
+import { onMounted, onUpdated } from "vue";
+
 
 const usersListStore = useUsersListStore();
-
+const route = useRoute();
+const router = useRouter();
 // 👉 Store
 const searchQuery = ref("");
 const selectedRole = ref();
@@ -33,7 +36,7 @@ const headers = [
   },
   {
     title: "Status",
-    key: "status",
+    key: "isActive",
   },
   {
     title: "Actions",
@@ -42,31 +45,27 @@ const headers = [
   },
 ];
 
-// const {
-//   data: usersData,
-//   execute: fetchUsers,
-// } = await useApi(createUrl('/apps/users', {
-//   query: {
-//     q: searchQuery,
-//     status: selectedStatus,
-//     role: selectedRole,
-//     itemsPerPage,
-//     page,
-//     sortBy,
-//     orderBy,
-//   },
-// }))
 
-const users = [
-  {
-    fullName: "John Doe",
-    email: "bH7Zk@example.com",
-    role: "Admin",
-    status: "Active",
-    actions: "Edit",
-  },
-];
-const totalUsers = computed(() => 10);
+const users = computed(() => usersListStore.users);
+const totalUsers = computed(() => usersListStore.meta.totalItems);
+
+onMounted(() => {
+  getDataUsers();
+});
+
+onUpdated(() => {
+  console.log('page', page.value);
+})
+
+const getDataUsers = async() =>{
+  await usersListStore.getUsers({
+    name: searchQuery.value,
+    status: selectedStatus.value,
+    role: selectedRole.value,
+    limit: itemsPerPage.value,
+    page: page.value,
+  })
+}
 
 // 👉 search filters
 const roles = [
@@ -127,11 +126,9 @@ const status = [
 ];
 
 const resolveUserStatusVariant = (stat) => {
-  const statLowerCase = stat.toLowerCase();
-  if (statLowerCase === "pending") return "warning";
-  if (statLowerCase === "active") return "success";
-  if (statLowerCase === "inactive") return "secondary";
-
+  if (stat === 0) return "warning";
+  if (stat === 1) return "success";
+  if (stat === "inactive") return "secondary";
   return "primary";
 };
 
@@ -142,16 +139,43 @@ const addNewUser = async (userData) => {
 
 };
 
-const deleteUser = async (id) => {
-  await $api(`/apps/users/${id}`, { method: "DELETE" });
+const updatePage =(e)=>{
+  console.log(e, 'data yg masuk');
+  page.value = e
+  router.push({ query: { ...route.query, page: e } })
+  getDataUsers()
+}
+const debounceTimer = ref(null);
+watch(
+  [() => route.query, searchQuery, selectedStatus],  // The reactive source we're watching
+  ([newQuery, newSearchQuery, newStatus], [oldQuery, oldSearchQuery, oldStatus]) => {
 
-  // Delete from selectedRows
-  const index = selectedRows.value.findIndex((row) => row === id);
-  if (index !== -1) selectedRows.value.splice(index, 1);
+    if(newQuery !== oldQuery){
+      page.value = Number(newQuery.page)
+      selectedStatus.value = newQuery.status
+      itemsPerPage.value = Number(newQuery.limit)
+    }
 
-  // Refetch User
-  fetchUsers();
-};
+    if(newSearchQuery !== oldSearchQuery){
+      if(debounceTimer.value !== undefined){
+        clearTimeout(debounceTimer.value)
+      }
+      debounceTimer.value = setTimeout(() => {
+        router.push({ query: { ...route.query, name: newSearchQuery } })
+        getDataUsers()
+      }, 1500)
+    }
+
+    if(newStatus !== oldStatus){
+      router.push({ query: { ...route.query, status: newStatus } })
+      selectedStatus.value = newStatus
+      console.log(selectedStatus.value, 'stts');
+      
+      getDataUsers()
+    }
+  },
+  { immediate: true }  // Optional: runs the watcher immediately on component mount
+)
 </script>
 
 <template>
@@ -201,7 +225,12 @@ const deleteUser = async (id) => {
               { value: -1, title: 'All' },
             ]"
             style="inline-size: 6.25rem"
-            @update:model-value="itemsPerPage = parseInt($event, 10)"
+            @update:model-value="{
+              itemsPerPage = parseInt($event, 10)
+              console.log(itemsPerPage);
+              router.push({ query: { ...route.query, limit: $event } })
+              getDataUsers()
+            }"
           />
         </div>
         <VSpacer />
@@ -254,7 +283,7 @@ const deleteUser = async (id) => {
             </VAvatar>
             <div class="d-flex flex-column">
               <h6 class="text-base">
-                  {{ item.fullName }}
+                  {{ item.name }}
               </h6>
               <div class="text-sm">
                 {{ item.email }}
@@ -280,14 +309,14 @@ const deleteUser = async (id) => {
         </template>
 
         <!-- Status -->
-        <template #item.status="{ item }">
+        <template #item.isActive="{ item }">
           <VChip
-            :color="resolveUserStatusVariant(item.status)"
+            :color="resolveUserStatusVariant(item.isActive)"
             size="small"
             label
             class="text-capitalize"
           >
-            {{ item.status }}
+            {{ item.isActive == 1 ? "Active" : "Pending" }}
           </VChip>
         </template>
 
@@ -336,7 +365,8 @@ const deleteUser = async (id) => {
         <!-- pagination -->
         <template #bottom>
           <TablePagination
-            v-model:page="page"
+            :page="page"
+            @update:page="updatePage($event)"
             :items-per-page="itemsPerPage"
             :total-items="totalUsers"
           />

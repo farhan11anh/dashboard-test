@@ -11,7 +11,7 @@ export default [
       {
         title: 'Transaction',
         // to: 'report-transaction',
-        to: { name: 'report-transaction', query: { page: '1' } },
+        to: { name: 'report-transaction', query: { page: '1', limit: 10 } },
       },
     ],
   },
@@ -29,7 +29,7 @@ export default [
       },
       {
         title: 'List',
-        to: 'users-list',
+        to: {name : 'users-list', query: { page: '1', limit: 10 }},
       },
     ],
   },
