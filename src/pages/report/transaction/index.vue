@@ -7,12 +7,18 @@ import CardStatitiscticsApproval from '@/views/pages/report/transaction/CardStat
 
 import { useReportTransactionStore } from '@/stores/report-transaction';
 import { onMounted } from 'vue';
-import { get } from '@vueuse/core';
 
 const router = useRouter()
 const route = useRoute()
 
 const reportTransactionStore = useReportTransactionStore()
+
+const resolveUserStatusVariant = (stat) => {
+  if (stat === 'pending') return "warning";
+  if (stat === 'paid') return "success";
+  if (stat === "cancel") return "error";
+  return "primary";
+};
 
 const headers = [
   {
@@ -63,6 +69,7 @@ const dateTime = ref();
 const merchantId = ref()
 const transactionId = ref()
 const statusSelected = ref()
+const vaNumber = ref()
 const selectedRows = ref([])
 
 const merchantList = ref(
@@ -90,6 +97,10 @@ const statusList = ref([
     {
         title: 'Cancel',
         value: 'cancel'
+    },
+    {
+      title: 'All',
+      value: ''
     }
 ])
 
@@ -104,8 +115,8 @@ const getDataTransaction = () => {
     sortBy: sortBy.value,
     orderBy: orderBy.value,
     dateTime: dateTime.value,
-    merchantId: merchantId.value,
-    transactionId: transactionId.value,
+    merchantCode: merchantId.value,
+    transactionNo: transactionId.value,
     status: statusSelected.value
   })
 }
@@ -208,7 +219,7 @@ watch(
               v-model="transactionId"
               placeholder="Transaction ID"
               :items="products.map(product =>{ 
-                return {'title': product.tId, 'value': product.tId} 
+                return {'title': product.TransactionNo, 'value': product.TransactionNo} 
                 }) "
               clearable
               clear-icon="tabler-x"
@@ -298,9 +309,14 @@ watch(
         </template>
 
         <template #item.status="{ item }">
-          <div>
-            Paid --
-          </div>
+          <VChip
+            :color="resolveUserStatusVariant(item.status)"
+            size="small"
+            label
+            class="text-capitalize"
+          >
+            {{ item.status }}
+          </VChip>
         </template>
 
 
