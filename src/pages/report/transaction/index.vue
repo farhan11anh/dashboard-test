@@ -348,7 +348,6 @@ watch(
             :items-per-page="itemsPerPage"
             :total-items="totalProduct"
           />
-          {{ page }}
         </template>
       </VDataTableServer>
     </VCard>
