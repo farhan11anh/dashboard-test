@@ -77,7 +77,7 @@ const merchantList = ref(
     {
       title: '11111',
       value: 1111
-    }, 
+    },
     {
       title:'2222',
       value: 2222
@@ -117,7 +117,8 @@ const getDataTransaction = () => {
     dateTime: dateTime.value,
     merchantCode: merchantId.value,
     transactionNo: transactionId.value,
-    status: statusSelected.value
+    status: statusSelected.value,
+    customerAccount: vaNumber.value
   })
 }
 
@@ -156,16 +157,28 @@ const updateQuery = (key, value) => {
   router.push({ query: currentQuery })
 }
 
+const bounceTimer = ref(null);
+const getBounce = (key, value) => {
+  if(bounceTimer.value !== undefined){
+        clearTimeout(bounceTimer.value)
+    }
+  bounceTimer.value = setTimeout(() => {
+    updateQuery(key, value)
+  }, 1500)
+}
+
+
 watch(
-  [()=>route.query ,page, dateTime, merchantId, transactionId, statusSelected, itemsPerPage],
-  ([newQuery,newPage, newDateTime, newMerchantId, newTransactionId, newStatusSelected, newItemsPerPage], [oldQuery, oldPage, oldDateTime, oldMerchantId, oldTransactionId, oldStatusSelected, oldItemsPerPage]) => {
+  [()=>route.query ,page, dateTime, merchantId, transactionId, statusSelected, itemsPerPage, vaNumber],
+  ([newQuery,newPage, newDateTime, newMerchantId, newTransactionId, newStatusSelected, newItemsPerPage, newVANumber], [oldQuery, oldPage, oldDateTime, oldMerchantId, oldTransactionId, oldStatusSelected, oldItemsPerPage, oldVANumber]) => {
     if(newQuery !== oldQuery) {
       getDataTransaction()
     }
     if(newPage !== oldPage) updateQuery('page', newPage)
     if(newDateTime !== oldDateTime) updateQuery('dateTime', newDateTime)
-    if(newMerchantId !== oldMerchantId) updateQuery('merchantId', newMerchantId)
-    if(newTransactionId !== oldTransactionId) updateQuery('transactionId', newTransactionId)
+    if(newMerchantId !== oldMerchantId) getBounce('merchantId', newMerchantId)
+    if(newTransactionId !== oldTransactionId) getBounce('transactionId', newTransactionId)
+    if(newVANumber !== oldVANumber) getBounce('vaNumber', newVANumber)
     if(newStatusSelected !== oldStatusSelected) updateQuery('status', newStatusSelected)
     if(newItemsPerPage !== oldItemsPerPage) updateQuery('itemsPerPage', newItemsPerPage)
   }
@@ -174,200 +187,158 @@ watch(
 
 <template>
   <VRow class="match-height">
-    <VCol
-      cols="12"
-    >
-    <VCard
-      title=""
-      class="mb-6"
-    >
-      <VCardText>
-        <VRow>
-          <VCol
-            cols="12"
-            sm="4"
-          >
-            <AppDateTimePicker
-              v-model="dateTime"
-              placeholder="Select Transaction Date"
-              append-icon="tabler-calendar"
-              
-            />
-          </VCol>
-
-          <VCol
-            cols="12"
-            sm="4"
-          >
-            <AppAutocomplete
-              v-model="merchantId"
-              placeholder="Merchant ID"
-              :items="products?.map(product =>{ 
-                return {'title': product.merchantCode, 'value': product.merchantCode} 
-                }) "
-              clearable
-              clear-icon="tabler-x"
-            />
-          </VCol>
-
-          <!-- 👉 Select Brand Name -->
-          <VCol
-            cols="12"
-            sm="4"
-          >
-            <AppAutocomplete
-              v-model="transactionId"
-              placeholder="Transaction ID"
-              :items="products.map(product =>{ 
-                return {'title': product.TransactionNo, 'value': product.TransactionNo} 
-                }) "
-              clearable
-              clear-icon="tabler-x"
-            />
-          </VCol>
-
-          <!-- 👉 Select Merchant ID -->
-          <VCol
-            cols="12"
-            sm="4"
-          >
-            <AppAutocomplete
-              v-model="merchantId"
-              placeholder="Merchant ID"
-              :items="merchantList"
-              clearable
-              clear-icon="tabler-x"
-            />
-          </VCol>
-          <!-- 👉 Select Status -->
-          <VCol
-            cols="12"
-            sm="4"
-          >
-            <AppSelect
-              v-model="statusSelected"
-              placeholder="Status"
-              :items="statusList"
-              clearable
-              clear-icon="tabler-x"
-            />
-          </VCol>
-          <VCol 
-            cols="12" 
-            sm="4">
-            
-            <VRow 
-              justify="space-between"
-            >
-              <!-- page size  -->
-              <VCol
-                cols="4"
-              >
-              <AppSelect
-                v-model="itemsPerPage"
-                :items="[5, 10, 20, 25, 50]"
+    <VCol cols="12">
+      <VCard title="" class="mb-6">
+        <VCardText>
+          <VRow>
+            <VCol cols="12" sm="4">
+              <AppDateTimePicker
+                v-model="dateTime"
+                placeholder="Select Transaction Date"
+                append-icon="tabler-calendar"
               />
-              </VCol>
-              <VCol
-                cols="8"
+            </VCol>
+
+            <VCol cols="12" sm="4">
+              <AppTextField
+                v-model="merchantId"
+                placeholder="Merchant ID"
+                clearable
+                clear-icon="tabler-x"
+              />
+            </VCol>
+
+            <!-- 👉 Select Brand Name -->
+            <VCol cols="12" sm="4">
+              <AppTextField
+                v-model="transactionId"
+                placeholder="Transaction ID"
+                clearable
+                clear-icon="tabler-x"
+              />
+            </VCol>
+
+            <!-- 👉 Select Merchant ID -->
+            <VCol cols="12" sm="4">
+              <AppTextField
+                v-model="vaNumber"
+                placeholder="Virtual Account Number"
+                clearable
+                clear-icon="tabler-x"
+              />
+            </VCol>
+            <!-- 👉 Select Status -->
+            <VCol cols="12" sm="4">
+              <AppSelect
+                v-model="statusSelected"
+                placeholder="Status"
+                :items="statusList"
+                clearable
+                clear-icon="tabler-x"
+              />
+            </VCol>
+            <VCol cols="12" sm="4">
+              <VRow justify="space-between">
+                <!-- page size  -->
+                <VCol cols="4">
+                  <AppSelect
+                    v-model="itemsPerPage"
+                    :items="[5, 10, 20, 25, 50]"
+                  />
+                </VCol>
+                <VCol cols="8">
+                  <!-- 👉 Export button -->
+                  <VBtn
+                    variant="tonal"
+                    color="secondary"
+                    prepend-icon="tabler-upload"
+                    width="100%"
+                  >
+                    Export
+                  </VBtn>
+                </VCol>
+              </VRow>
+            </VCol>
+          </VRow>
+        </VCardText>
+
+        <VDivider class="mt-4" />
+
+        <!-- 👉 Datatable  -->
+        <VDataTableServer
+          v-model:items-per-page="itemsPerPage"
+          v-model:model-value="selectedRows"
+          v-model:page="page"
+          :headers="headers"
+          show-select
+          :items="products"
+          :items-length="totalProduct"
+          class="text-no-wrap"
+          @update:options="updateOptions"
+        >
+          <template #item.transactionDate="{ item }">
+            <div class="d-flex align-center gap-x-4">
+              <div
+                class="cursor-pointer"
+                @click="router.push('/report/transaction/' + item.id)"
               >
-                <!-- 👉 Export button -->
-                <VBtn
-                  variant="tonal"
-                  color="secondary"
-                  prepend-icon="tabler-upload"
-                  width="100%"
-                >
-                  Export
-                </VBtn>
-              </VCol>
-            </VRow>
+                {{ item.transactionDate }}
+              </div>
+            </div>
+          </template>
 
-          </VCol>
-        </VRow>
-      </VCardText>
+          <template #item.status="{ item }">
+            <VChip
+              :color="resolveUserStatusVariant(item.status)"
+              size="small"
+              label
+              class="text-capitalize"
+            >
+              {{ item.status }}
+            </VChip>
+          </template>
 
-      <VDivider class="mt-4" />
+          <!-- Actions -->
+          <template #item.actions="{ item }">
+            <IconBtn>
+              <VIcon icon="tabler-edit" />
+            </IconBtn>
 
-      <!-- 👉 Datatable  -->
-      <VDataTableServer
-        v-model:items-per-page="itemsPerPage"
-        v-model:model-value="selectedRows"
-        v-model:page="page"
-        :headers="headers"
-        show-select
-        :items="products"
-        :items-length="totalProduct"
-        class="text-no-wrap"
-        @update:options="updateOptions"
-      >
+            <IconBtn>
+              <VIcon icon="tabler-dots-vertical" />
+              <VMenu activator="parent">
+                <VList>
+                  <VListItem value="download" prepend-icon="tabler-download">
+                    Download
+                  </VListItem>
 
-        <template #item.transactionDate="{ item }">
-          <div class="d-flex align-center gap-x-4">
-            <div class="cursor-pointer" @click="router.push('/report/transaction/'+ item.id)" > {{ item.transactionDate }} </div>
-          </div>
-        </template>
+                  <VListItem
+                    value="delete"
+                    prepend-icon="tabler-trash"
+                    @click="deleteProduct(item.id)"
+                  >
+                    Delete
+                  </VListItem>
 
-        <template #item.status="{ item }">
-          <VChip
-            :color="resolveUserStatusVariant(item.status)"
-            size="small"
-            label
-            class="text-capitalize"
-          >
-            {{ item.status }}
-          </VChip>
-        </template>
+                  <VListItem value="duplicate" prepend-icon="tabler-copy">
+                    Duplicate
+                  </VListItem>
+                </VList>
+              </VMenu>
+            </IconBtn>
+          </template>
 
+          <!-- pagination -->
 
-        <!-- Actions -->
-        <template #item.actions="{ item }">
-          <IconBtn>
-            <VIcon icon="tabler-edit" />
-          </IconBtn>
-
-          <IconBtn>
-            <VIcon icon="tabler-dots-vertical" />
-            <VMenu activator="parent">
-              <VList>
-                <VListItem
-                  value="download"
-                  prepend-icon="tabler-download"
-                >
-                  Download
-                </VListItem>
-
-                <VListItem
-                  value="delete"
-                  prepend-icon="tabler-trash"
-                  @click="deleteProduct(item.id)"
-                >
-                  Delete
-                </VListItem>
-
-                <VListItem
-                  value="duplicate"
-                  prepend-icon="tabler-copy"
-                >
-                  Duplicate
-                </VListItem>
-              </VList>
-            </VMenu>
-          </IconBtn>
-        </template>
-
-        <!-- pagination -->
-         
-        <template #bottom>
-          <TablePagination
-            v-model:page="page"
-            :items-per-page="itemsPerPage"
-            :total-items="totalProduct"
-          />
-        </template>
-      </VDataTableServer>
-    </VCard>
+          <template #bottom>
+            <TablePagination
+              v-model:page="page"
+              :items-per-page="itemsPerPage"
+              :total-items="totalProduct"
+            />
+          </template>
+        </VDataTableServer>
+      </VCard>
     </VCol>
-
   </VRow>
 </template>
