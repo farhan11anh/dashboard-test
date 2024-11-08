@@ -35,6 +35,44 @@ export const useReportTransactionStore = defineStore('report-transaction', {
       })
     },
 
+    async downloadFile(params) { 
+      new Promise((resolve, reject) => {
+        $api.get('/orders', {responseType: 'blob'}, {params: params})
+          .then(async (response) => {
+            if ('showSaveFilePicker' in window) {
+              // Membuka file manager dengan dialog simpan file
+              const handle = await window.showSaveFilePicker({
+                suggestedName: 'transaction-report.xlsx',
+                types: [
+                  {
+                    description: 'Text file',
+                    accept: { 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'] },
+                  },
+                ],
+              });
+        
+              // Menulis data blob ke file yang dipilih pengguna
+              const writable = await handle.createWritable();
+              await writable.write(response.data);
+              await writable.close();
+              console.log('File berhasil disimpan.');
+            } else {
+              const url = URL.createObjectURL(response.data);
+              const anchor = document.createElement('a');
+              anchor.href = url;
+              anchor.download = 'transaction-report.xlsx';
+              anchor.click();
+              URL.revokeObjectURL(url);
+            }
+            resolve()
+          })
+          .catch((error) => {
+            console.log(error);
+            reject(error)
+          })
+      }) 
+    },
+
     async getDetails(id) {
       new Promise((resolve, reject) => {
         $api.get('/orders/' + id)

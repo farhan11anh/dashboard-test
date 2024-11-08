@@ -1,9 +1,6 @@
 <script setup>
-import AppAutocomplete from '@/@core/components/app-form-elements/AppAutocomplete.vue';
 import AppDateTimePicker from '@/@core/components/app-form-elements/AppDateTimePicker.vue';
 import AppSelect from '@/@core/components/app-form-elements/AppSelect.vue';
-import LogisticsCardStatistics from '@/views/apps/logistics/LogisticsCardStatistics.vue'
-import CardStatitiscticsApproval from '@/views/pages/report/transaction/CardStatitiscticsApproval.vue';
 
 import { useReportTransactionStore } from '@/stores/report-transaction';
 import { onMounted } from 'vue';
@@ -119,6 +116,21 @@ const getDataTransaction = () => {
     transactionNo: transactionId.value,
     status: statusSelected.value,
     customerAccount: vaNumber.value
+  })
+}
+
+const download = () => {
+  reportTransactionStore.downloadFile({
+    page: page.value,
+    limit: itemsPerPage.value,
+    sortBy: sortBy.value,
+    orderBy: orderBy.value,
+    transactionDate: dateTime.value,
+    merchantCode: merchantId.value,
+    transactionNo: transactionId.value,
+    status: statusSelected.value,
+    customerAccount: vaNumber.value,
+    isDownload: 1
   })
 }
 
@@ -253,6 +265,7 @@ watch(
                     color="secondary"
                     prepend-icon="tabler-upload"
                     width="100%"
+                    @click="download()"
                   >
                     Export
                   </VBtn>
