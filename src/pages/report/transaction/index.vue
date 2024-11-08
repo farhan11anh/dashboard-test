@@ -114,7 +114,7 @@ const getDataTransaction = () => {
     limit: itemsPerPage.value,
     sortBy: sortBy.value,
     orderBy: orderBy.value,
-    dateTime: dateTime.value,
+    transactionDate: dateTime.value,
     merchantCode: merchantId.value,
     transactionNo: transactionId.value,
     status: statusSelected.value,
