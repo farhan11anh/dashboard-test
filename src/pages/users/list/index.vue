@@ -236,17 +236,14 @@ watch(
         <VSpacer />
 
         <div class="app-user-search-filter d-flex align-center flex-wrap gap-4">
-          <!-- 👉 Search  -->
           <div style="inline-size: 15.625rem">
             <AppTextField v-model="searchQuery" placeholder="Search User" />
           </div>
 
-          <!-- 👉 Export button -->
           <VBtn variant="tonal" color="secondary" prepend-icon="tabler-upload">
             Export
           </VBtn>
 
-          <!-- 👉 Add user button -->
           <VBtn
             prepend-icon="tabler-plus"
             @click="isAddNewUserDrawerVisible = true"
