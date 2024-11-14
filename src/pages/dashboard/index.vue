@@ -10,7 +10,6 @@ import EcommerceStatistics from '@/views/dashboards/ecommerce/EcommerceStatistic
 
 <template>
   <VRow class="match-height">
-    <!-- 👉 Congratulation John -->
     <VCol
       cols="12"
     >

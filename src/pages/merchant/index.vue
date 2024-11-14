@@ -285,7 +285,6 @@ const deleteProduct = async id => {
   if (index !== -1)
     selectedRows.value.splice(index, 1)
 
-  // Refetch products
   fetchProducts()
 }
 </script>
