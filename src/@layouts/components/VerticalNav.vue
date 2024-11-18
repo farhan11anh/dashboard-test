@@ -9,6 +9,7 @@ import {
 } from '@layouts/components'
 import { useLayoutConfigStore } from '@layouts/stores/config'
 import { injectionKeyIsVerticalNavHovered } from '@layouts/symbols'
+import { VImg } from 'vuetify/components'
 
 const props = defineProps({
   tag: {
@@ -86,7 +87,9 @@ const hideTitleAndIcon = configStore.isVerticalNavMini(isHovered)
           to="/"
           class="app-logo app-title-wrapper"
         >
-          <VNodeRenderer :nodes="layoutConfig.app.logo" />
+
+        <img src="/src/assets/images/bayarind-logo.png" class="app-logo"v-show="!hideTitleAndIcon" alt="">
+          <!-- <VNodeRenderer :nodes="layoutConfig.app.logo" />
 
           <Transition name="vertical-nav-app-title">
             <h1
@@ -95,7 +98,7 @@ const hideTitleAndIcon = configStore.isVerticalNavMini(isHovered)
             >
               {{ layoutConfig.app.title }}
             </h1>
-          </Transition>
+          </Transition> -->
         </RouterLink>
         <!-- 👉 Vertical nav actions -->
         <!-- Show toggle collapsible in >md and close button in <md -->
