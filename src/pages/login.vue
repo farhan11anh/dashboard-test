@@ -41,9 +41,11 @@ const refVForm = ref()
 
 const credentials = ref({
   // email: 'admin@demo.com',
-  // password: 'admin',
-  email: 'muhammad.farhan@bayarind.id',
-  password: 'Admin123_',
+  // // password: 'admin',
+  // email: 'muhammad.farhan@bayarind.id',
+  // password: 'Admin123_',
+  email: '',
+  password: '',
 })
 
 const rememberMe = ref(false)
@@ -106,6 +108,8 @@ const login = async () => {
     await nextTick(() => {
       router.replace(route.query.to ? String(route.query.to) : '/');
       layoutStore.setSnackbar(true, 'success', 'Login Success')
+      console.log(res);
+      
     })
   } catch (err) {
     layoutStore.setSnackbar(true, 'error', 'Login Failed')
@@ -189,7 +193,7 @@ const onSubmit = () => {
                 <AppTextField
                   v-model="credentials.email"
                   label="Email"
-                  placeholder="johndoe@email.com"
+                  placeholder="input email"
                   type="email"
                   autofocus
                   :rules="[requiredValidator, emailValidator]"

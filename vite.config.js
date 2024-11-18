@@ -103,4 +103,5 @@ export default defineConfig({
       './src/**/*.vue',
     ],
   },
+  base : '/',
 })

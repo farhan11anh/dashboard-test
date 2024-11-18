@@ -90,7 +90,7 @@ $api.interceptors.response.use(
   function (err) {
     return new Promise(function () {
     useLayoutStore().setLoading(false);
-    console.log(err?.response?.status, 'status yang ada di api');
+    // console.log(err?.response?.status, 'status yang ada di api');
 
     if(err?.response?.status == 401){
       useAuthStore().logout();
