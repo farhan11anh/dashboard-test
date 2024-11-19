@@ -19,10 +19,10 @@ export default [
     title: 'Setting',
     icon: { icon: 'tabler-settings' },
     children: [
-      {
-        title: 'Role',
-        to: 'users-role',
-      },
+      // {
+      //   title: 'Role',
+      //   to: 'users-role',
+      // },
       {
         title: 'Profile',
         to: {name: 'users-profile-tab', params: { tab: 'security' }},

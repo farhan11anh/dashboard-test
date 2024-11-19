@@ -265,7 +265,6 @@ watch(
         :items-length="totalUsers"
         :headers="headers"
         class="text-no-wrap"
-        show-select
         @update:options="updateOptions"
       >
         <!-- User -->

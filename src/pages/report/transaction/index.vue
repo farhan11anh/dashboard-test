@@ -283,7 +283,6 @@ watch(
           v-model:model-value="selectedRows"
           v-model:page="page"
           :headers="headers"
-          show-select
           :items="products"
           :items-length="totalProduct"
           class="text-no-wrap"
