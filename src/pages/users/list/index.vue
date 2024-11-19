@@ -30,19 +30,19 @@ const headers = [
     title: "Name",
     key: "user",
   },
-  {
-    title: "Role",
-    key: "role",
-  },
+  // {
+  //   title: "Role",
+  //   key: "role",
+  // },
   {
     title: "Status",
     key: "isActive",
   },
-  {
-    title: "Actions",
-    key: "actions",
-    sortable: false,
-  },
+  // {
+  //   title: "Actions",
+  //   key: "actions",
+  //   sortable: false,
+  // },
 ];
 
 
