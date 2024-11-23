@@ -261,8 +261,6 @@ watch(
                 <VCol cols="8">
                   <!-- 👉 Export button -->
                   <VBtn
-                    variant="tonal"
-                    color="secondary"
                     prepend-icon="tabler-upload"
                     width="100%"
                     @click="download()"
