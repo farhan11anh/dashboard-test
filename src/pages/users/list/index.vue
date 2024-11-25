@@ -240,7 +240,7 @@ watch(
             <AppTextField v-model="searchQuery" placeholder="Search User" />
           </div>
 
-          <VBtn variant="tonal" color="secondary" prepend-icon="tabler-upload">
+          <VBtn prepend-icon="tabler-upload">
             Export
           </VBtn>
 

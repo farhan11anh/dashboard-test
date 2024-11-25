@@ -35,43 +35,52 @@ export const useReportTransactionStore = defineStore('report-transaction', {
       })
     },
 
-    async downloadFile(params) { 
-      new Promise((resolve, reject) => {
-        $api.get('/orders', {responseType: 'blob'}, {params: params})
-          .then(async (response) => {
-            if ('showSaveFilePicker' in window) {
-              // Membuka file manager dengan dialog simpan file
-              const handle = await window.showSaveFilePicker({
-                suggestedName: 'transaction-report.xlsx',
-                types: [
-                  {
-                    description: 'Text file',
-                    accept: { 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'] },
+    async downloadFile(params) {
+      return new Promise(async (resolve, reject) => {
+        try {
+          const response = await $api.get('/orders', {
+            responseType: 'blob', // Ensure response is returned as a Blob
+            params: params,       // Include the query parameters
+          });
+    
+          if ('showSaveFilePicker' in window) {
+            // Use the modern File System Access API
+            const handle = await window.showSaveFilePicker({
+              suggestedName: 'transaction-report.xlsx',
+              types: [
+                {
+                  description: 'Excel file',
+                  accept: {
+                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'],
                   },
-                ],
-              });
-        
-              // Menulis data blob ke file yang dipilih pengguna
-              const writable = await handle.createWritable();
-              await writable.write(response.data);
-              await writable.close();
-              console.log('File berhasil disimpan.');
-            } else {
-              const url = URL.createObjectURL(response.data);
-              const anchor = document.createElement('a');
-              anchor.href = url;
-              anchor.download = 'transaction-report.xlsx';
-              anchor.click();
-              URL.revokeObjectURL(url);
-            }
-            resolve()
-          })
-          .catch((error) => {
-            console.log(error);
-            reject(error)
-          })
-      }) 
+                },
+              ],
+            });
+    
+            const writable = await handle.createWritable();
+            await writable.write(response.data);
+            await writable.close();
+            console.log('File successfully saved.');
+          } else {
+            // Fallback for browsers without File System Access API
+            const url = URL.createObjectURL(response.data);
+            const anchor = document.createElement('a');
+            anchor.href = url;
+            anchor.download = 'transaction-report.xlsx';
+            document.body.appendChild(anchor); // Append to the DOM to ensure click works in some browsers
+            anchor.click();
+            document.body.removeChild(anchor); // Clean up
+            URL.revokeObjectURL(url);          // Revoke the blob URL to free up memory
+          }
+    
+          resolve();
+        } catch (error) {
+          console.error('Error downloading file:', error);
+          reject(error);
+        }
+      });
     },
+    
 
     async getDetails(id) {
       new Promise((resolve, reject) => {
