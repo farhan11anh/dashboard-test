@@ -1,0 +1,97 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  IMAGE_NAME: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  DOCKER_TLS_CERTDIR: ""
+  #LOG_PATH: /data/snap/docker-log/
+
+.build-template:
+  image: docker:24.0.5
+  services:
+    - name: docker:24.0.5-dind
+      alias: docker
+  before_script:
+    - docker info  # Check Docker daemon accessibility
+    - echo "$CI_JOB_TOKEN" | docker login -u "$CI_REGISTRY_USER" --password-stdin repos.bayarind.id:6060
+    - eval $(cat $VAR_FILE | grep -v '^#')
+  script:
+    - echo "Building Docker image $IMAGE_NAME..."
+    - echo $IMAGE_NAME
+    - echo $VITE_API_BASE_URL
+    - echo $VITE_API_DEV_MODE
+    - docker build --build-arg VITE_API_BASE_URL=$VITE_API_BASE_URL --build-arg VITE_API_DEV_MODE=$VITE_API_DEV_MODE -t $IMAGE_NAME .
+    - echo "Pushing Docker image to $IMAGE_NAME"
+    - docker push $IMAGE_NAME
+    - docker images
+
+build-dev:
+  extends: .build-template
+  stage: build
+  only:
+    #- development
+     - /charlie-v\.([0-9]+(\.[0-9]+)+)/
+build-staging:
+  extends: .build-template
+  stage: build
+  environment:
+    name: staging
+  only:
+    #- /beta-v\.([0-9]+(\.[0-9]+)+)/
+    - staging
+build-prod:
+  extends: .build-template
+  stage: build
+  only:
+    - production
+
+.deploy-template:
+  image: alpine
+  before_script:
+    - export $(grep -v '^#' $VAR_FILE | xargs)
+    #- apk add --no-cache openssh
+    -  |
+      if [ -z $(docker network ls --filter name=LIFESTYLE_NETWORK -q) ]; then
+        echo "Creating network LIFESTYLE_NETWORK"
+        docker network create --subnet=192.168.0.0/24 LIFESTYLE_NETWORK
+      else
+        echo "Network LIFESTYLE_NETWORK already exists"
+      fi
+  script:
+    - echo $LOG_PATH
+    - chmod 600 $SSH_PRIVATE_KEY
+    - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY hudan@$SERVER_IP "
+      docker login -u "$CI_REGISTRY_USER" -p "$CI_JOB_TOKEN" repos.bayarind.id:6060  &&
+      docker stop dashboard_lifestyle || true &&
+      docker rm dashboard_lifestyle || true &&
+      docker rmi $IMAGE_NAME || true &&
+      docker pull $IMAGE_NAME &&
+      echo "run start" &&
+      docker run -d -p 5001:80 -v $LOG_PATH:/app/logs --net LIFESTYLE_NETWORK  --ip 192.168.0.11 --name dashboard_lifestyle $IMAGE_NAME"
+deploy-dev:
+  extends: .deploy-template
+  stage: deploy
+  environment:
+    name: development
+    #url: http://dev.example.com
+  only:
+    #- development
+     - /charlie-v\.([0-9]+(\.[0-9]+)+)/
+deploy-staging:
+  extends: .deploy-template
+  stage: deploy
+  environment:
+    name: staging
+    #url: http://staging.example.com
+  only:
+    #- /beta-v\.([0-9]+(\.[0-9]+)+)/
+    - staging
+deploy-prod:
+  extends: .deploy-template
+  stage: deploy
+  environment:
+    name: production
+   # url: http://prod.example.com
+  only:
+    - production
