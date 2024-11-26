@@ -94,7 +94,6 @@ $api.interceptors.response.use(
 
     if(err?.response?.status == 401){
       useAuthStore().logout();
-      window.location.href = '/login'
       useLayoutStore().setSnackbar(true, 'error', 'Session Expired Please Login Again')
     }
     

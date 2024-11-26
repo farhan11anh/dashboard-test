@@ -1,7 +1,8 @@
 import { useCookie } from "@/@core/composable/useCookie";
 import { useLayoutStore } from "./layout";
 import { defineStore } from "pinia";
-import { useRouter } from "vue-router";
+
+import { router } from "@/plugins/1.router";
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
@@ -96,9 +97,7 @@ export const useAuthStore = defineStore("auth", {
       // Remove "userData" from cookie
       useCookie("userData").value = null;
       useCookie("userAbilityRules").value = null;
-      // ℹ️ We had to remove abilities in then block because if we don't nav menu items mutation is visible while redirecting user to login page
-
-      // Remove "userAbilities" from cookie
+      router.push({ name: "login" });
     },
   },
   //   actions: {

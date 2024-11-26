@@ -112,7 +112,7 @@ const login = async () => {
       
     })
   } catch (err) {
-    layoutStore.setSnackbar(true, 'error', 'Login Failed')
+    layoutStore.setSnackbar(true, 'error', err?.response?.data?.responseMessage)
   }
 }
 
