@@ -236,7 +236,7 @@ const onSubmit = () => {
               </VCol>
 
               <!-- create account -->
-              <VCol
+              <!-- <VCol
                 cols="12"
                 class="text-body-1 text-center"
               >
@@ -258,15 +258,15 @@ const onSubmit = () => {
                 <VDivider />
                 <span class="mx-4">or</span>
                 <VDivider />
-              </VCol>
+              </VCol> -->
 
               <!-- auth providers -->
-              <VCol
+              <!-- <VCol
                 cols="12"
                 class="text-center"
               >
                 <AuthProvider />
-              </VCol>
+              </VCol> -->
             </VRow>
           </VForm>
         </VCardText>

@@ -185,9 +185,8 @@ watch(
         <VCardTitle>Filters</VCardTitle>
       </VCardItem>
 
-      <VCardText>
+      <!-- <VCardText>
         <VRow>
-          <!-- 👉 Select Role -->
           <VCol cols="12" sm="6">
             <AppSelect
               v-model="selectedRole"
@@ -198,7 +197,6 @@ watch(
             />
           </VCol>
 
-          <!-- 👉 Select Status -->
           <VCol cols="12" sm="6">
             <AppSelect
               v-model="selectedStatus"
@@ -209,7 +207,7 @@ watch(
             />
           </VCol>
         </VRow>
-      </VCardText>
+      </VCardText> -->
 
       <VDivider />
 
