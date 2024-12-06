@@ -4,7 +4,7 @@ import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
 
 export const $api = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
+    baseURL: 'https://1b0a-36-64-3-119.ngrok-free.app/',
     headers: {
         'Content-Type': 'application/json',
     },
