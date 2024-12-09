@@ -1,33 +1,41 @@
 <script setup>
-import { useCookie } from '@/@core/composable/useCookie';
-import { firstLetterUppercase } from '@/utils/firstlatterUppercase';
-import avatar1 from '@images/avatars/avatar-1.png'
+import { useCookie } from "@/@core/composable/useCookie";
+import { firstLetterUppercase } from "@/utils/firstlatterUppercase";
+import avatar1 from "@images/avatars/avatar-1.png";
+import { useAuthStore } from "@/stores/auth";
 
-const router = useRouter()
-const ability = useAbility()
+const router = useRouter();
+const ability = useAbility();
 
-// TODO: Get type from backend
-const userData = useCookie('userData')
+const userData = useCookie("userData");
+
+const authStore = useAuthStore();
 
 const logout = async () => {
+  new Promise(async (resolve, reject) => {
+    try {
+      await $api.post("/auth/logout/")
+      .then(() => {
+        // Remove "accessToken" from cookie
+        useCookie("accessToken").value = null;
+        // Remove "userData" from cookie
+        useCookie("userData").value = null;
+        useCookie("userAbilityRules").value = null;
+        router.push("/login");
+        useLayoutStore().setSnackbar(true, "success", "Logout Success");
+        // Remove "userAbilities" from cookie
+        useCookie("userAbilityRules").value = null;
 
-  // Remove "accessToken" from cookie
-  useCookie('accessToken').value = null
-
-  // Remove "userData" from cookie
-  userData.value = null
-
-  // Redirect to login page
-  await router.push('/login')
-
-  // ℹ️ We had to remove abilities in then block because if we don't nav menu items mutation is visible while redirecting user to login page
-
-  // Remove "userAbilities" from cookie
-  useCookie('userAbilityRules').value = null
-
-  // Reset ability to initial ability
-  ability.update([])
-}
+        // Reset ability to initial ability
+        ability.update([]);
+        resolve();
+      });
+    } catch (error) {
+      useLayoutStore().setSnackbar(true, "error", "Logout Failed");
+      reject(error);
+    }
+  });
+};
 </script>
 
 <template>
@@ -39,20 +47,11 @@ const logout = async () => {
     bordered
     color="success"
   >
-    <VAvatar
-      class="cursor-pointer"
-      color="primary"
-      variant="tonal"
-    >
+    <VAvatar class="cursor-pointer" color="primary" variant="tonal">
       <VImg :src="avatar1" />
 
       <!-- SECTION Menu -->
-      <VMenu
-        activator="parent"
-        width="230"
-        location="bottom end"
-        offset="14px"
-      >
+      <VMenu activator="parent" width="230" location="bottom end" offset="14px">
         <VList>
           <!-- 👉 User Avatar & Name -->
           <VListItem>
@@ -65,10 +64,7 @@ const logout = async () => {
                   offset-y="3"
                   color="success"
                 >
-                  <VAvatar
-                    color="primary"
-                    variant="tonal"
-                  >
+                  <VAvatar color="primary" variant="tonal">
                     <VImg :src="avatar1" />
                   </VAvatar>
                 </VBadge>
@@ -76,9 +72,15 @@ const logout = async () => {
             </template>
 
             <VListItemTitle class="font-weight-semibold">
-              {{ firstLetterUppercase(useCookie('userData')?.value?.name || "Admin") }}
+              {{
+                firstLetterUppercase(
+                  useCookie("userData")?.value?.name || "Admin"
+                )
+              }}
             </VListItemTitle>
-            <VListItemSubtitle>{{ (useCookie('userData')?.value?.Role) }}</VListItemSubtitle>
+            <VListItemSubtitle>{{
+              useCookie("userData")?.value?.Role
+            }}</VListItemSubtitle>
           </VListItem>
 
           <VDivider class="my-2" />
@@ -86,11 +88,7 @@ const logout = async () => {
           <!-- 👉 Profile -->
           <VListItem link to="/users/profile/security">
             <template #prepend>
-              <VIcon
-                class="me-2"
-                icon="tabler-user"
-                size="22"
-              />
+              <VIcon class="me-2" icon="tabler-user" size="22" />
             </template>
 
             <VListItemTitle>Profile</VListItemTitle>
@@ -115,17 +113,10 @@ const logout = async () => {
           <!-- 👉 Logout -->
           <VListItem @click="logout">
             <template #prepend>
-              <VIcon
-                class="me-2"
-                icon="tabler-logout"
-                size="22"
-
-              />
+              <VIcon class="me-2" icon="tabler-logout" size="22" />
             </template>
 
             <VListItemTitle>Logout</VListItemTitle>
-
-
           </VListItem>
         </VList>
       </VMenu>
