@@ -4,7 +4,7 @@ import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
 
 export const $api = axios.create({
-    baseURL: 'https://1b0a-36-64-3-119.ngrok-free.app/',
+    baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
     headers: {
         'Content-Type': 'application/json',
     },
@@ -19,6 +19,9 @@ $api.isCancel = axios.isCancel;
 $api.interceptors.request.use(
   (config) => {
     useLayoutStore().setLoading(true);
+    if(import.meta.env.VITE_API_DEV_MODE == 'true'){
+      config.headers['ngrok-skip-browser-warning'] = 'true'
+    }
     
     // if (config?.params?.is_noloading || config?.data?.is_noloading) {
     //   useAuth().setLoading(false);

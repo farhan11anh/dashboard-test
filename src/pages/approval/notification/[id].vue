@@ -45,7 +45,7 @@ const historyData = [
         date: '2022-01-01',
         reason: '-',
         status: 'approved',
-        layer: 'Bayarind',
+layer: '',
         approvedBy: 'Joko',
         email: 'joko@gmail.com'
     }
