@@ -14,8 +14,7 @@ const authStore = useAuthStore();
 const logout = async () => {
   new Promise(async (resolve, reject) => {
     try {
-      await $api.post("/auth/logout/")
-      .then(() => {
+      await $api.post("/auth/logout/").then(() => {
         // Remove "accessToken" from cookie
         useCookie("accessToken").value = null;
         // Remove "userData" from cookie
