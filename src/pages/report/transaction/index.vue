@@ -114,7 +114,7 @@ const getDataTransaction = () => {
     transactionDate: dateTime.value,
     merchantCode: merchantId.value,
     transactionNo: transactionId.value,
-    status: statusSelected.value,
+    paymentStatus: statusSelected.value,
     customerAccount: vaNumber.value
   })
 }
