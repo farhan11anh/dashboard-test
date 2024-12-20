@@ -53,7 +53,7 @@ const headers = [
   },
   {
     title: 'Status',
-    key: 'status',
+    key: 'paymentMessage',
   },
   {
     title: 'Actions',
@@ -114,7 +114,7 @@ const getDataTransaction = () => {
     transactionDate: dateTime.value,
     merchantCode: merchantId.value,
     transactionNo: transactionId.value,
-    paymentStatus: statusSelected.value,
+    paymentMessage: statusSelected.value,
     customerAccount: vaNumber.value
   })
 }
@@ -186,13 +186,13 @@ watch(
     if(newQuery !== oldQuery) {
       getDataTransaction()
     }
-    if(newPage !== oldPage) updateQuery('page', newPage)
-    if(newDateTime !== oldDateTime) updateQuery('dateTime', newDateTime)
+    if(newPage !== oldPage) getBounce('page', newPage)
+    if(newDateTime !== oldDateTime) getBounce('dateTime', newDateTime)
     if(newMerchantId !== oldMerchantId) getBounce('merchantId', newMerchantId)
     if(newTransactionId !== oldTransactionId) getBounce('transactionId', newTransactionId)
     if(newVANumber !== oldVANumber) getBounce('vaNumber', newVANumber)
-    if(newStatusSelected !== oldStatusSelected) updateQuery('status', newStatusSelected)
-    if(newItemsPerPage !== oldItemsPerPage) updateQuery('itemsPerPage', newItemsPerPage)
+    if(newStatusSelected !== oldStatusSelected) getBounce('status', newStatusSelected)
+    if(newItemsPerPage !== oldItemsPerPage) getBounce('itemsPerPage', newItemsPerPage)
   }
 )
 </script>

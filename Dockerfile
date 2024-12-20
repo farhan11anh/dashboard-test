@@ -1,23 +1,19 @@
-# Gunakan base image Node.js
-FROM node:18 AS build
+# build stage
+FROM node:18-alpine as build-stage
 
-# Set direktori kerja
+COPY package*.json pnpm-lock.yaml ./tmp/
+RUN npm set strict-ssl false
+RUN cd /tmp && npm install -g pnpm
+COPY src /tmp/src
+RUN cd /tmp && pnpm install --frozen-lockfile
+RUN mkdir -p /app && cp -a /tmp/node_modules /app/
 WORKDIR /app
-
-# Salin file package.json dan pnpm-lock.yaml
-COPY package.json pnpm-lock.yaml ./
-
-# Install pnpm
-RUN npm install -g pnpm
-
-# Abaikan script postinstall selama pnpm install
-RUN npm_config_ignore_scripts=true pnpm install
-
-# Salin semua file ke dalam kontainer
-COPY . .
-
-# Build aplikasi
+COPY . /app
 RUN pnpm build
 
-# Jalankan aplikasi dengan pnpm run dev
-CMD ["pnpm", "run", "dev"]
+# production stage
+FROM nginx:stable-alpine as production-stage
+COPY --from=build-stage /app/dist /usr/share/nginx/html
+COPY default.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

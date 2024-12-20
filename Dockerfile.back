@@ -1,0 +1,28 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+COPY package.json pnpm-lock.yaml ./
+COPY src /app/src
+
+RUN npm set strict-ssl false
+RUN npm install -g pnpm serve
+
+RUN --mount=type=cache,target=/app/.pnpm-store \
+  pnpm config set store-dir /app/.pnpm-store && \
+  pnpm install --frozen-lockfile
+
+COPY . .
+
+# ARG VITE_API_BASE_URL
+# ARG VITE_API_DEV_MODE
+
+# ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
+# ENV VITE_API_DEV_MODE=${VITE_API_DEV_MODE}
+
+RUN pnpm build
+
+EXPOSE 5001 
+ENV PORT 5001
+
+CMD ["serve", "-s", "dist"]
