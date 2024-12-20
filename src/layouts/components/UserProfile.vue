@@ -3,6 +3,7 @@ import { useCookie } from "@/@core/composable/useCookie";
 import { firstLetterUppercase } from "@/utils/firstlatterUppercase";
 import avatar1 from "@images/avatars/avatar-1.png";
 import { useAuthStore } from "@/stores/auth";
+import { useLayoutStore } from "@/stores/layout";
 
 const router = useRouter();
 const ability = useAbility();
