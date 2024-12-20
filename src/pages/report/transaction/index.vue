@@ -85,15 +85,15 @@ const merchantList = ref(
 const statusList = ref([
     {
         title: 'Paid',
-        value: 'paid'
+        value: 'PAID'
     },
     {
         title: 'Pending',
-        value: 'pending'
+        value: 'PENDING'
     },
     {
         title: 'Cancel',
-        value: 'cancel'
+        value: 'CANCEL'
     },
     {
       title: 'All',
