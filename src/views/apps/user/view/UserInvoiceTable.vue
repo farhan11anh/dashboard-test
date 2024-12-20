@@ -148,7 +148,6 @@ const deleteInvoice = async id => {
               @update:model-value="itemsPerPage = parseInt($event, 10)"
             />
 
-            <!-- 👉 Export invoice -->
             <VBtn
               append-icon="tabler-upload"
               variant="tonal"

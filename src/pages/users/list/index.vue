@@ -238,10 +238,6 @@ watch(
             <AppTextField v-model="searchQuery" placeholder="Search User" />
           </div>
 
-          <VBtn prepend-icon="tabler-upload">
-            Export
-          </VBtn>
-
           <VBtn
             prepend-icon="tabler-plus"
             @click="isAddNewUserDrawerVisible = true"
