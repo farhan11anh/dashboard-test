@@ -69,19 +69,6 @@ const statusSelected = ref()
 const vaNumber = ref()
 const selectedRows = ref([])
 
-const merchantList = ref(
-  [
-    {
-      title: '11111',
-      value: 1111
-    },
-    {
-      title:'2222',
-      value: 2222
-    }
-  ]
-)
-
 const statusList = ref([
     {
         title: 'Paid',
@@ -147,7 +134,7 @@ const updateOptions = options => {
 
 const products = computed(() => reportTransactionStore.items)
 
-const totalProduct = computed(() => reportTransactionStore.meta.totalPages)
+const totalProduct = computed(() => reportTransactionStore.meta.totalItems)
 
 const deleteProduct = async id => {
   await $api(`apps/ecommerce/products/${ id }`, { method: 'DELETE' })
