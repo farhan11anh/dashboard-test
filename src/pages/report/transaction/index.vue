@@ -173,13 +173,13 @@ watch(
     if(newQuery !== oldQuery) {
       getDataTransaction()
     }
-    if(newPage !== oldPage) getBounce('page', newPage)
-    if(newDateTime !== oldDateTime) getBounce('dateTime', newDateTime)
+    if(newPage !== oldPage) updateQuery('page', newPage)
+    if(newDateTime !== oldDateTime) updateQuery('dateTime', newDateTime)
     if(newMerchantId !== oldMerchantId) getBounce('merchantId', newMerchantId)
     if(newTransactionId !== oldTransactionId) getBounce('transactionId', newTransactionId)
     if(newVANumber !== oldVANumber) getBounce('vaNumber', newVANumber)
-    if(newStatusSelected !== oldStatusSelected) getBounce('status', newStatusSelected)
-    if(newItemsPerPage !== oldItemsPerPage) getBounce('itemsPerPage', newItemsPerPage)
+    if(newStatusSelected !== oldStatusSelected) updateQuery('status', newStatusSelected)
+    if(newItemsPerPage !== oldItemsPerPage) updateQuery('itemsPerPage', newItemsPerPage)
   }
 )
 </script>
